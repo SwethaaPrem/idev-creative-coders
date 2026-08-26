@@ -20,7 +20,7 @@ export const Hero: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center min-h-[75vh]">
           
           {/* Left Column: Bold Editorial Copy */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left order-2 lg:order-1">
+          <div className="lg:col-span-7 flex flex-col items-start text-left">
             
             {/* Availability Badge */}
             <ScrollReveal delay={0.1} direction="down">
@@ -29,14 +29,14 @@ export const Hero: React.FC = () => {
                 Available for selected projects
               </div>
             </ScrollReveal>
-
+ 
             {/* Hero Eyebrow */}
             <ScrollReveal delay={0.2}>
               <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-text-secondary mb-4 block">
                 CREATIVE TECHNOLOGY STUDIO
               </span>
             </ScrollReveal>
-
+ 
             {/* Main Headline */}
             <ScrollReveal delay={0.3} className="max-w-xl">
               <h1 className="text-4xl sm:text-5xl md:text-6.5xl font-bold tracking-tight text-reveal-gradient leading-[1.08] mb-6">
@@ -45,14 +45,14 @@ export const Hero: React.FC = () => {
                 <span className="accent-text-gradient">move businesses forward</span>.
               </h1>
             </ScrollReveal>
-
+ 
             {/* Supporting Copy */}
             <ScrollReveal delay={0.4} className="max-w-lg">
               <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-8">
                 IDEV Creative Coders combines design, development, and emerging technology to create websites, applications, and digital products that are built to perform.
               </p>
             </ScrollReveal>
-
+ 
             {/* Action Controls */}
             <ScrollReveal delay={0.5}>
               <div className="flex flex-col sm:flex-row gap-4 items-center justify-start w-full">
@@ -72,9 +72,9 @@ export const Hero: React.FC = () => {
               </div>
             </ScrollReveal>
           </div>
-
+ 
           {/* Right Column: Interactive WebGL Canvas */}
-          <div className="lg:col-span-5 w-full h-[320px] sm:h-[400px] lg:h-[500px] relative order-1 lg:order-2 bg-surface/10 rounded-3xl border border-border-subtle/50 backdrop-blur-sm overflow-hidden p-4">
+          <div className="lg:col-span-5 w-full h-[320px] sm:h-[400px] lg:h-[500px] relative bg-surface/10 rounded-3xl border border-border-subtle/50 backdrop-blur-sm overflow-hidden p-4">
             <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 text-[8px] font-mono tracking-widest text-text-secondary uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               Interactive WebGL Node System
