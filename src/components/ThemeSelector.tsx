@@ -3,7 +3,11 @@ import { Sun, Moon, Monitor } from "lucide-react";
 
 type Theme = "light" | "dark" | "system";
 
-export const ThemeSelector: React.FC = () => {
+interface ThemeSelectorProps {
+  align?: "top" | "bottom";
+}
+
+export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ align = "bottom" }) => {
   const [theme, setTheme] = useState<Theme>(() => {
     return (localStorage.getItem("theme") as Theme) || "system";
   });
@@ -78,7 +82,9 @@ export const ThemeSelector: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-32 rounded-xl bg-surface border border-border-subtle shadow-xl z-50 overflow-hidden">
+        <div className={`absolute right-0 w-32 rounded-xl bg-surface border border-border-subtle shadow-xl z-50 overflow-hidden ${
+          align === "top" ? "bottom-full mb-2" : "top-full mt-2"
+        }`}>
           <div className="py-1">
             {(["light", "dark", "system"] as Theme[]).map((mode) => (
               <button

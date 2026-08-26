@@ -147,7 +147,7 @@ export const Navbar: React.FC = () => {
                   <span>+91 86105 82676</span>
                   <span>idevccv@gmail.com</span>
                 </div>
-                <ThemeSelector />
+                <ThemeSelector align="top" />
               </div>
             </motion.div>
           </motion.div>
