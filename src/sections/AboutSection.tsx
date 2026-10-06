@@ -4,6 +4,7 @@ import { ImageFrame } from "../components/ImageFrame";
 import { ScrollReveal } from "../components/ScrollReveal";
 import { Section, SectionHeader } from "../components/Section";
 import { StatTile } from "../components/StatTile";
+import { ThinkingIllustration } from "../components/ThinkingIllustration";
 
 export const AboutSection: React.FC = () => {
   const stats: { label: string; value: string; tone: "neutral" | "lime" }[] = [
@@ -16,14 +17,14 @@ export const AboutSection: React.FC = () => {
     <Section id="about">
       <SectionHeader eyebrow="01 // WHO WE ARE" lines={["We are IDEV Creative Coders."]} />
 
-      {/* Team imagery on the right, the description card overlapping its left edge */}
+      {/* Calm vector panel on the right, the description card overlapping its left edge */}
       <div className="relative grid grid-cols-12 items-end lg:mb-24">
         <div className="col-span-12 row-start-1 lg:col-span-9 lg:col-start-4">
           <ScrollReveal distance={60} duration={1.2}>
             <ImageFrame
-              className="aspect-[4/5] sm:aspect-[16/10] lg:aspect-auto lg:h-[640px]"
+              className="aspect-[5/7] border-[var(--line-strong)] sm:aspect-[16/10] lg:aspect-auto lg:h-[640px]"
               overlay={
-                <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/35 to-transparent p-6 text-left sm:p-10 lg:p-14">
+                <div className="absolute inset-0 p-6 text-left sm:p-10 lg:p-14">
                   <EditorialHeading
                     as="h3"
                     size="section"
@@ -33,12 +34,9 @@ export const AboutSection: React.FC = () => {
                 </div>
               }
             >
-              <img
-                src="/assets/branding/team_tech_background.jpg"
-                alt=""
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
+              <div className="absolute inset-0 bg-[#120a0c]">
+                <ThinkingIllustration />
+              </div>
             </ImageFrame>
           </ScrollReveal>
         </div>
