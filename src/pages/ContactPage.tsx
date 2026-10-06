@@ -8,7 +8,7 @@ export const ContactPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full pt-20">
+    <div className="w-full pt-16 sm:pt-24">
       <ContactSection />
     </div>
   );

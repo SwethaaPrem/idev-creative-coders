@@ -2,96 +2,88 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Cpu, Globe, Smartphone, Database, Cloud, Shield, Brain, Layers } from "lucide-react";
 import { ScrollReveal } from "../components/ScrollReveal";
+import { Section, SectionHeader } from "../components/Section";
 import { services } from "../data/services";
 
 export const Services: React.FC = () => {
   const getIcon = (num: string) => {
     switch (num) {
-      case "01": return <Cpu className="w-5 h-5 text-accent" />;
-      case "02": return <Globe className="w-5 h-5 text-accent" />;
-      case "03": return <Smartphone className="w-5 h-5 text-accent" />;
-      case "04": return <Database className="w-5 h-5 text-accent" />;
-      case "05": return <Cloud className="w-5 h-5 text-accent" />;
-      case "06": return <Shield className="w-5 h-5 text-accent" />;
-      case "07": return <Brain className="w-5 h-5 text-accent" />;
+      case "01": return <Cpu className="w-5 h-5" />;
+      case "02": return <Globe className="w-5 h-5" />;
+      case "03": return <Smartphone className="w-5 h-5" />;
+      case "04": return <Database className="w-5 h-5" />;
+      case "05": return <Cloud className="w-5 h-5" />;
+      case "06": return <Shield className="w-5 h-5" />;
+      case "07": return <Brain className="w-5 h-5" />;
       case "08":
       default:
-        return <Layers className="w-5 h-5 text-accent" />;
+        return <Layers className="w-5 h-5" />;
     }
   };
 
   return (
-    <section id="services" className="py-24 bg-background border-b border-border-subtle select-none">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        
-        {/* Section Header */}
-        <div className="max-w-3xl mb-16 text-left">
-          <ScrollReveal direction="down">
-            <span className="text-[10px] font-mono tracking-[0.25em] text-text-secondary uppercase block mb-4">
-              02 // WHAT WE BUILD
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-bold mb-6 tracking-tight text-reveal-gradient">
-              WHAT WE BUILD.
-            </h2>
-            <p className="text-text-secondary text-base sm:text-lg leading-relaxed">
-              From business requirements to production-ready systems. We design, build, and deploy custom technology solutions.
-            </p>
-          </ScrollReveal>
-        </div>
+    <Section id="services" className="select-none">
+      <SectionHeader
+        eyebrow="02 // WHAT WE BUILD"
+        lines={["WHAT WE BUILD."]}
+        description="From business requirements to production-ready systems. We design, build, and deploy custom technology solutions."
+      />
 
-        {/* Premium Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {services.map((service, index) => (
-            <ScrollReveal
-              key={service.number}
-              direction="up"
-              delay={0.05 * index}
-              className="group relative card-premium p-6 rounded-2xl flex flex-col justify-between min-h-[350px]"
-            >
-              <div>
-                {/* Header Row */}
-                <div className="flex items-center justify-between mb-8 select-none">
-                  <div className="p-2.5 bg-background border border-border-subtle rounded-xl">
+      {/* Editorial index: one row per service; a row floods with colour on hover */}
+      <ul className="border-t border-[var(--line-strong)]">
+        {services.map((service, index) => (
+          <li key={service.number} className="border-b border-[var(--line-strong)]">
+            <ScrollReveal delay={0.04 * index}>
+              <div className="group relative -mx-4 grid grid-cols-12 items-start gap-y-5 rounded-[1.75rem] px-4 py-8 text-left transition-colors duration-500 hover:bg-accent-fill hover:text-on-accent sm:-mx-6 sm:px-6 sm:py-10 lg:gap-x-8">
+                {/* Number + icon */}
+                <div className="col-span-12 flex items-center gap-4 lg:col-span-2">
+                  <span className="grid h-12 w-12 place-items-center rounded-full border border-[var(--line-strong)] text-text-secondary transition-colors duration-500 group-hover:border-on-accent group-hover:text-on-accent">
                     {getIcon(service.number)}
-                  </div>
-                  <span className="text-[10px] font-mono font-bold text-text-secondary">
+                  </span>
+                  <span className="font-mono text-xs font-bold text-text-secondary transition-colors duration-500 group-hover:text-on-accent">
                     {service.number}
                   </span>
                 </div>
 
-                {/* Content */}
-                <h3 className="text-lg font-bold text-text-primary mb-3 tracking-tight text-left">
+                {/* Title */}
+                <h3 className="col-span-12 font-display text-[clamp(1.9rem,3.6vw,3.4rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.015em] text-text-primary transition-all duration-500 [font-stretch:88%] group-hover:translate-x-2 group-hover:text-on-accent lg:col-span-4">
                   {service.title}
                 </h3>
-                <p className="text-text-secondary text-xs leading-relaxed mb-6 text-left">
-                  {service.description}
-                </p>
-              </div>
 
-              {/* Capabilities and Arrow */}
-              <div>
-                <ul className="flex flex-wrap gap-1.5 mb-6">
-                  {service.capabilities.slice(0, 3).map((capability) => (
-                    <li
-                      key={capability}
-                      className="text-[8px] font-mono tracking-wider uppercase bg-background border border-border-subtle text-text-secondary px-2 py-0.5 rounded"
-                    >
-                      {capability}
-                    </li>
-                  ))}
-                </ul>
+                {/* Description + capabilities */}
+                <div className="col-span-12 flex flex-col gap-5 lg:col-span-4">
+                  <p className="text-sm leading-relaxed text-text-secondary transition-colors duration-500 group-hover:text-on-accent">
+                    {service.description}
+                  </p>
+                  <ul className="flex flex-wrap gap-2">
+                    {service.capabilities.slice(0, 3).map((capability) => (
+                      <li
+                        key={capability}
+                        className="rounded-full border border-[var(--line-strong)] px-3 py-1.5 font-mono text-[10px] uppercase leading-none text-text-secondary transition-colors duration-500 group-hover:border-on-accent group-hover:text-on-accent"
+                      >
+                        {capability}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                {/* Learn More link */}
-                <Link to="/services" className="flex items-center justify-between pt-4 border-t border-border-subtle/50 text-[10px] font-mono uppercase tracking-widest text-text-secondary group-hover:text-accent transition-colors duration-300">
-                  <span>Learn More</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </Link>
+                {/* Learn More (stretched link makes the whole row clickable) */}
+                <div className="col-span-12 lg:col-span-2 lg:justify-self-end">
+                  <Link
+                    to="/services"
+                    className="inline-flex items-center gap-3 font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-text-secondary transition-colors duration-500 after:absolute after:inset-0 after:rounded-[1.75rem] group-hover:text-on-accent"
+                  >
+                    <span>Learn More</span>
+                    <span className="grid h-10 w-10 place-items-center rounded-full border border-[var(--line-strong)] transition-all duration-500 group-hover:border-on-accent group-hover:bg-on-accent group-hover:text-accent-fill">
+                      <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </span>
+                  </Link>
+                </div>
               </div>
             </ScrollReveal>
-          ))}
-        </div>
-
-      </div>
-    </section>
+          </li>
+        ))}
+      </ul>
+    </Section>
   );
 };

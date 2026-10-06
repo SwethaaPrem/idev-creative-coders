@@ -3,7 +3,21 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ScrollReveal } from "../components/ScrollReveal";
 import { Button } from "../components/Button";
+import { EditorialHeading } from "../components/EditorialHeading";
+import { GlassPanel } from "../components/GlassPanel";
+import { ImageFrame } from "../components/ImageFrame";
+import { ProjectMetrics, StatusBadge, TechChips } from "../components/ProjectMeta";
+import { ProjectPreview } from "../components/ProjectPreview";
 import { projects } from "../data/projects";
+import { envClass, splitTitle } from "../lib/projectEnv";
+
+/** Numbered label that opens each narrative block. */
+const BlockLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <h3 className="eyebrow mb-6 flex items-center gap-3 border-b border-[var(--line-strong)] pb-4 !text-text-primary">
+    <span className="h-2 w-2 shrink-0 bg-[var(--p-label)]" />
+    {children}
+  </h3>
+);
 
 export const CaseStudy: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,7 +35,7 @@ export const CaseStudy: React.FC = () => {
   if (!project) {
     return (
       <div className="min-h-[80vh] flex flex-col items-center justify-center text-center px-6">
-        <h1 className="text-4xl font-bold mb-4">Case Study Not Found</h1>
+        <h1 className="font-display text-4xl font-extrabold mb-4">Case Study Not Found</h1>
         <p className="text-text-secondary mb-8">The project case you are looking for does not exist or has been relocated.</p>
         <Button to="/work" variant="primary">Back to Work ↗</Button>
       </div>
@@ -33,89 +47,80 @@ export const CaseStudy: React.FC = () => {
   const nextProject = projects[nextProjectIndex];
 
   return (
-    <div className="w-full pt-32 pb-24 text-left select-none">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        
+    <div className={`${envClass(project.id)} w-full pb-24 text-left select-none`}>
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12 pt-32 sm:pt-40">
+
         {/* Back Link */}
-        <ScrollReveal direction="down" className="mb-12">
+        <ScrollReveal direction="down" className="mb-12 sm:mb-16">
           <Link
             to="/work"
-            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-text-secondary hover:text-text-primary transition-colors duration-300"
+            className="group inline-flex items-center gap-3 rounded-full border border-[var(--line-strong)] px-5 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-text-secondary transition-colors duration-500 hover:border-text-primary hover:text-text-primary"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" />
             Back to Work
           </Link>
         </ScrollReveal>
 
         {/* Hero Title */}
-        <ScrollReveal direction="down" delay={0.1} className="max-w-4xl border-b border-border-subtle pb-12 mb-16">
-          <div className="flex items-center gap-3 text-xs font-mono mb-4">
-            <span className="text-accent">PROJECT {project.number}</span>
-            <span className="text-text-secondary">/</span>
-            <span className="uppercase tracking-wider text-text-secondary">{project.category}</span>
-            <span className={`text-[8px] uppercase tracking-wider px-2 py-0.5 rounded ml-2 ${
-              project.status === "Ongoing" 
-                ? "bg-amber-500/10 text-amber-500 border border-amber-500/20" 
-                : "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
-            }`}>
-              {project.status}
-            </span>
+        <div className="mb-16 grid grid-cols-1 items-end gap-10 sm:mb-20 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-8">
+            <ScrollReveal direction="none" className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-3">
+              <span className="eyebrow flex items-center gap-3 !text-[var(--p-label)]">
+                <span className="h-2 w-2 bg-[var(--p-label)]" />
+                PROJECT {project.number}
+              </span>
+              <span className="eyebrow">/</span>
+              <span className="eyebrow">{project.category}</span>
+              <StatusBadge status={project.status} />
+            </ScrollReveal>
+            <EditorialHeading as="h1" size="section" lines={splitTitle(project.title, 14)} />
           </div>
-          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-reveal-gradient leading-[1.1] mb-6">
-            {project.title}
-          </h1>
-          <p className="text-text-secondary text-base sm:text-lg leading-relaxed mt-4 max-w-2xl">
-            {project.description}
-          </p>
+          <div className="lg:col-span-4">
+            <ScrollReveal delay={0.2}>
+              <p className="text-base leading-relaxed text-text-secondary sm:text-lg">{project.description}</p>
+            </ScrollReveal>
+          </div>
+        </div>
 
-          {/* Core Metrics */}
-          {project.metrics && (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12 pt-8 border-t border-border-subtle/50">
-              {project.metrics.map((metric) => (
-                <div key={metric.label} className="flex flex-col">
-                  <span className="text-3xl sm:text-4xl font-bold text-accent font-sans">
-                    {metric.value}
-                  </span>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-text-secondary mt-1">
-                    {metric.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
+        {/* Project visual with floating core metrics */}
+        <ScrollReveal distance={60} duration={1.2}>
+          <ImageFrame className="aspect-[4/3] sm:aspect-[16/9] lg:aspect-auto lg:h-[620px]">
+            <ProjectPreview id={project.id} anchor="right" className={project.metrics ? "lg:pb-28" : ""} />
+          </ImageFrame>
         </ScrollReveal>
+        {project.metrics && (
+          <ScrollReveal delay={0.2} className="relative z-10 mx-3 -mt-12 sm:mx-8 lg:mx-16 lg:-mt-24">
+            <GlassPanel className="p-6 sm:p-10">
+              <ProjectMetrics metrics={project.metrics} large className="gap-x-12 sm:gap-x-20" />
+            </GlassPanel>
+          </ScrollReveal>
+        )}
 
         {/* Main Content Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          
+        <div className="mt-24 grid grid-cols-1 items-start gap-16 sm:mt-32 lg:grid-cols-12">
+
           {/* Left Column: Brief details */}
-          <div className="lg:col-span-8 flex flex-col gap-12">
-            
+          <div className="flex flex-col gap-20 lg:col-span-8">
+
             {/* Overview */}
             <ScrollReveal direction="up">
-              <h3 className="text-xs font-mono uppercase tracking-widest text-text-primary mb-4 border-b border-border-subtle pb-2">
-                01 // Overview
-              </h3>
-              <p className="text-text-secondary text-sm sm:text-base leading-relaxed">
+              <BlockLabel>01 // Overview</BlockLabel>
+              <p className="font-display text-[clamp(1.4rem,2.4vw,2.2rem)] font-semibold leading-[1.25] tracking-[-0.02em] text-text-primary">
                 {project.content.overview}
               </p>
             </ScrollReveal>
 
             {/* Problem & Objective */}
-            <ScrollReveal direction="up" className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <ScrollReveal direction="up" className="grid grid-cols-1 gap-12 sm:grid-cols-2">
               <div>
-                <h4 className="text-xs font-mono uppercase tracking-widest text-text-primary mb-4 border-b border-border-subtle pb-2">
-                  02 // The Problem
-                </h4>
-                <p className="text-text-secondary text-xs sm:text-sm leading-relaxed">
+                <BlockLabel>02 // The Problem</BlockLabel>
+                <p className="text-sm leading-relaxed text-text-secondary sm:text-base">
                   {project.content.problem}
                 </p>
               </div>
               <div>
-                <h4 className="text-xs font-mono uppercase tracking-widest text-text-primary mb-4 border-b border-border-subtle pb-2">
-                  03 // Objective
-                </h4>
-                <p className="text-text-secondary text-xs sm:text-sm leading-relaxed">
+                <BlockLabel>03 // Objective</BlockLabel>
+                <p className="text-sm leading-relaxed text-text-secondary sm:text-base">
                   {project.content.objective}
                 </p>
               </div>
@@ -123,38 +128,30 @@ export const CaseStudy: React.FC = () => {
 
             {/* Solution & Architecture */}
             <ScrollReveal direction="up">
-              <h3 className="text-xs font-mono uppercase tracking-widest text-text-primary mb-4 border-b border-border-subtle pb-2">
-                04 // Engineering Solution
-              </h3>
-              <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-6">
+              <BlockLabel>04 // Engineering Solution</BlockLabel>
+              <p className="mb-8 text-sm leading-relaxed text-text-secondary sm:text-base">
                 {project.content.solution}
               </p>
-              <div className="bg-surface border border-border-subtle p-6 rounded-2xl">
-                <span className="text-[10px] font-mono tracking-widest text-text-primary uppercase mb-3 block">
-                  Systems Architecture
-                </span>
-                <p className="text-text-secondary text-xs leading-relaxed">
+              <GlassPanel variant="solid" className="p-6 sm:p-8">
+                <span className="eyebrow mb-4 block text-text-primary">Systems Architecture</span>
+                <p className="text-sm leading-relaxed text-text-secondary">
                   {project.content.architecture}
                 </p>
-              </div>
+              </GlassPanel>
             </ScrollReveal>
 
             {/* Development Process */}
             <ScrollReveal direction="up">
-              <h3 className="text-xs font-mono uppercase tracking-widest text-text-primary mb-4 border-b border-border-subtle pb-2">
-                05 // Development Process
-              </h3>
-              <p className="text-text-secondary text-sm sm:text-base leading-relaxed">
+              <BlockLabel>05 // Development Process</BlockLabel>
+              <p className="text-sm leading-relaxed text-text-secondary sm:text-base">
                 {project.content.process}
               </p>
             </ScrollReveal>
 
             {/* Results */}
             <ScrollReveal direction="up">
-              <h3 className="text-xs font-mono uppercase tracking-widest text-text-primary mb-4 border-b border-border-subtle pb-2">
-                06 // Business Outcome
-              </h3>
-              <p className="text-text-secondary text-sm sm:text-base leading-relaxed">
+              <BlockLabel>06 // Business Outcome</BlockLabel>
+              <p className="text-sm leading-relaxed text-text-secondary sm:text-base">
                 {project.content.results}
               </p>
             </ScrollReveal>
@@ -162,64 +159,53 @@ export const CaseStudy: React.FC = () => {
           </div>
 
           {/* Right Column: Sidebar metadata specs */}
-          <div className="lg:col-span-4 lg:sticky lg:top-28 flex flex-col gap-8 bg-surface border border-border-subtle p-8 rounded-2xl">
-            <div>
-              <span className="text-[10px] font-mono tracking-widest text-text-primary uppercase block mb-3">
-                Technologies
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="text-xs font-mono text-text-secondary bg-background border border-border-subtle px-3 py-1 rounded"
-                  >
-                    {tech}
-                  </span>
-                ))}
+          <div className="lg:col-span-4 lg:sticky lg:top-28">
+            <GlassPanel variant="solid" className="flex flex-col gap-8 p-8 sm:p-10">
+              <div>
+                <span className="eyebrow mb-4 block text-text-primary">Technologies</span>
+                <TechChips technologies={project.technologies} />
               </div>
-            </div>
 
-            <div className="border-t border-border-subtle/50 pt-6">
-              <span className="text-[10px] font-mono tracking-widest text-text-primary uppercase block mb-3">
-                Key Features
-              </span>
-              <ul className="flex flex-col gap-2.5">
-                {project.content.features.map((feature, i) => (
-                  <li key={i} className="text-xs text-text-secondary flex gap-2 items-start">
-                    <span className="text-accent font-semibold font-mono">0{i+1}.</span>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+              <div className="border-t border-border-subtle pt-8">
+                <span className="eyebrow mb-4 block text-text-primary">Key Features</span>
+                <ul className="flex flex-col gap-4">
+                  {project.content.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-text-secondary">
+                      <span className="font-mono text-xs font-bold text-[var(--p-label)]">0{i+1}.</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            <div className="border-t border-border-subtle/50 pt-6">
-              <span className="text-[10px] font-mono tracking-widest text-text-primary uppercase block mb-2">
-                Client Attribution
-              </span>
-              <span className="text-[11px] text-text-secondary leading-relaxed italic">
-                Proprietary architecture code and data systems developed by IDEV Creative Coders. Case statistics verified at pilot test environments.
-              </span>
-            </div>
+              <div className="border-t border-border-subtle pt-8">
+                <span className="eyebrow mb-3 block text-text-primary">Client Attribution</span>
+                <span className="text-xs italic leading-relaxed text-text-secondary">
+                  Proprietary architecture code and data systems developed by IDEV Creative Coders. Case statistics verified at pilot test environments.
+                </span>
+              </div>
+            </GlassPanel>
           </div>
 
         </div>
 
         {/* Dynamic Next Project Navigation footer links */}
-        <div className="border-t border-border-subtle mt-24 pt-12 flex items-center justify-between">
+        <div className="mt-28 flex items-center justify-between gap-4 border-t border-[var(--line-strong)] pt-10 sm:mt-40">
           <Link
             to="/work"
-            className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-text-secondary hover:text-text-primary transition-colors duration-300"
+            className="group inline-flex items-center gap-3 rounded-full border border-[var(--line-strong)] px-5 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-text-secondary transition-colors duration-500 hover:border-text-primary hover:text-text-primary"
           >
-            <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+            <ArrowLeft className="h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" />
             Back to Work
           </Link>
           <Link
             to={`/work/${nextProject.id}`}
-            className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-text-primary hover:text-accent transition-colors duration-300"
+            className="group inline-flex items-center gap-4 rounded-full border border-[var(--accent-edge)] bg-[var(--p-sig)] py-1.5 pl-6 pr-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-[var(--p-sig-ink)] transition-colors duration-500 hover:bg-text-primary hover:text-background"
           >
             Next Project
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            <span className="grid h-10 w-10 place-items-center rounded-full bg-[var(--p-sig-ink)] text-[var(--p-sig)]">
+              <ArrowRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
+            </span>
           </Link>
         </div>
 

@@ -5,31 +5,25 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 import { Button } from "./Button";
 import { ThemeSelector } from "./ThemeSelector";
 import { Logo } from "./Logo";
+import { PREMIUM_EASE } from "../lib/motion";
+
+const navLinks = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Services", path: "/services" },
+  { name: "Work", path: "/work" },
+  { name: "Process", path: "/process" },
+  { name: "Contact", path: "/contact" },
+];
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(() => typeof window !== "undefined" && window.scrollY > 20);
   const location = useLocation();
 
-  const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Services", path: "/services" },
-    { name: "Work", path: "/work" },
-    { name: "Process", path: "/process" },
-    { name: "Contact", path: "/contact" },
-  ];
-
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -38,97 +32,118 @@ export const Navbar: React.FC = () => {
     setIsOpen(false);
   }, [location]);
 
+  // Lock page scroll while the drawer is open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   return (
     <>
-      <motion.nav
-        initial={{ y: -20, opacity: 0 }}
+      <motion.header
+        initial={{ y: -24, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          scrolled
-            ? "py-4 bg-background/80 border-b border-border-subtle backdrop-blur-md"
-            : "py-6 bg-transparent"
+        transition={{ duration: 0.9, ease: PREMIUM_EASE }}
+        className={`fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,backdrop-filter] duration-500 ${
+          scrolled && !isOpen
+            ? "border-border-subtle bg-[var(--nav-bg)] backdrop-blur-md"
+            : "border-transparent bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-          {/* Logo / Wordmark */}
-          <Link to="/" className="flex items-center group">
+        <div className="mx-auto flex h-[72px] max-w-[1400px] items-center justify-between gap-4 px-5 sm:px-8 md:px-12">
+          <Link to="/" aria-label="IDEV Creative Coders, home" className="shrink-0 whitespace-nowrap">
             <Logo />
           </Link>
 
-          {/* Desktop Navigation Links (Maroon/Rose Capsule Container) */}
-          <div className="hidden md:flex items-center gap-3 bg-accent border border-accent-secondary px-5 py-2.5 rounded-full shadow-[0_12px_36px_rgba(74,21,33,0.2)]">
-            {navLinks.map((link) => {
+          {/* Desktop navigation: small mono labels with a tiny index */}
+          <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
+            {navLinks.map((link, index) => {
               const isActive = location.pathname === link.path;
               return (
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`relative text-xs uppercase tracking-widest transition-colors duration-300 px-4 py-2 outline-none focus-visible:text-white font-mono ${
-                    isActive ? "text-[#faf7f2] font-bold" : "text-[#faf7f2]/80 hover:text-[#faf7f2]"
+                  className={`group relative flex items-baseline gap-1.5 rounded-full px-4 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.06em] outline-none transition-colors duration-500 focus-visible:ring-2 focus-visible:ring-accent ${
+                    isActive ? "text-text-primary" : "text-text-secondary hover:text-text-primary"
                   }`}
                 >
-                  <span className="relative z-10">{link.name}</span>
+                  <span
+                    className={`text-[9px] transition-colors duration-500 ${
+                      isActive ? "text-accent" : "text-text-secondary group-hover:text-accent"
+                    }`}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  {link.name}
                   {isActive && (
                     <motion.span
                       layoutId="activeNavIndicator"
-                      className="absolute inset-0 bg-white/10 rounded-full"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      className="absolute inset-x-4 -bottom-px h-[2px] bg-accent"
+                      transition={{ type: "spring", stiffness: 320, damping: 32 }}
                     />
                   )}
                 </Link>
               );
             })}
-          </div>
+          </nav>
 
-          {/* Right CTA */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden items-center gap-3 lg:flex">
             <ThemeSelector />
-            <Button variant="secondary" to="/contact" className="px-5 py-2.5 text-xs">
-              Let's Talk <ArrowUpRight className="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <Button variant="primary" to="/contact" className="px-5 py-3 text-[11px]">
+              Let's Talk <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
             </Button>
           </div>
 
-          {/* Hamburger Icon */}
+          {/* Hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-text-primary hover:text-accent focus:outline-none"
+            className="grid h-11 w-11 place-items-center rounded-full border border-[var(--line-strong)] text-text-primary transition-colors duration-300 hover:border-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden"
             aria-label="Toggle Menu"
+            aria-expanded={isOpen}
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
-      </motion.nav>
+      </motion.header>
 
-      {/* Mobile Drawer */}
+      {/* Mobile / tablet drawer */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-30 pt-28 px-6 bg-background flex flex-col justify-between pb-12 md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: PREMIUM_EASE }}
+            className="fixed inset-0 z-30 flex flex-col justify-between overflow-y-auto bg-background px-5 pb-8 pt-24 sm:px-8 lg:hidden"
           >
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col border-t border-border-subtle">
               {navLinks.map((link, index) => {
                 const isActive = location.pathname === link.path;
                 return (
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    key={link.name}
-                  >
-                    <Link
-                      to={link.path}
-                      className={`text-2xl font-semibold tracking-wide uppercase ${
-                        isActive ? "text-accent" : "text-text-primary"
-                      }`}
+                  <div key={link.name} className="overflow-hidden border-b border-border-subtle">
+                    <motion.div
+                      initial={{ y: "100%" }}
+                      animate={{ y: 0 }}
+                      transition={{ delay: 0.08 + index * 0.06, duration: 0.8, ease: PREMIUM_EASE }}
                     >
-                      {link.name}
-                    </Link>
-                  </motion.div>
+                      <Link
+                        to={link.path}
+                        className={`flex items-baseline justify-between gap-4 py-3.5 font-display text-[clamp(2.4rem,12vw,4.25rem)] font-extrabold uppercase leading-none tracking-[-0.02em] [font-stretch:88%] transition-colors duration-300 ${
+                          isActive ? "text-accent" : "text-text-primary hover:text-accent"
+                        }`}
+                      >
+                        <span className="flex items-baseline gap-4">
+                          <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-text-secondary">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          {link.name}
+                        </span>
+                        <ArrowUpRight className="h-6 w-6 shrink-0 self-center opacity-40" />
+                      </Link>
+                    </motion.div>
+                  </div>
                 );
               })}
             </div>
@@ -136,13 +151,13 @@ export const Navbar: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-col gap-6 border-t border-border-subtle pt-8"
+              transition={{ delay: 0.5, duration: 0.7, ease: PREMIUM_EASE }}
+              className="mt-10 flex flex-col gap-6"
             >
               <Button to="/contact" className="w-full text-center">
-                Let's Talk <ArrowUpRight className="w-4 h-4 ml-1" />
+                Let's Talk <ArrowUpRight className="ml-1 h-4 w-4" />
               </Button>
-              <div className="flex justify-between items-center text-xs text-text-secondary font-mono">
+              <div className="flex items-center justify-between font-mono text-xs text-text-secondary">
                 <div className="flex flex-col gap-1">
                   <span>+91 86105 82676</span>
                   <span>idevccv@gmail.com</span>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Server, ArrowRight } from "lucide-react";
+import { GlassPanel } from "../components/GlassPanel";
 import { ScrollReveal } from "../components/ScrollReveal";
+import { Section, SectionHeader } from "../components/Section";
 
 export const CloudDevOps: React.FC = () => {
   const [activeStep, setActiveStep] = useState<string>("LOAD BALANCER");
@@ -35,58 +37,39 @@ export const CloudDevOps: React.FC = () => {
   }, []);
 
   return (
-    <section className="py-24 bg-background border-b border-border-subtle select-none">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        
-        {/* Section Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 items-start text-left">
-          <div className="lg:col-span-6">
-            <ScrollReveal direction="down">
-              <span className="text-[10px] font-mono tracking-[0.25em] text-text-secondary uppercase block mb-4">
-                05 // CLOUD & DEVOPS
-              </span>
-              <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-reveal-gradient leading-[1.1] mb-6">
-                ENGINEERED FOR <br />
-                PRODUCTION.
-              </h2>
-            </ScrollReveal>
-          </div>
-          <div className="lg:col-span-6">
-            <ScrollReveal direction="up" delay={0.2}>
-              <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-xl">
-                We orchestrate cloud infrastructure built on resilience, observability, and scale. Using Docker, Terraform, and automated CI/CD deployment architectures to keep platforms online.
-              </p>
-            </ScrollReveal>
-          </div>
-        </div>
+    <Section className="select-none">
+      <SectionHeader
+        eyebrow="05 // CLOUD & DEVOPS"
+        lines={["ENGINEERED FOR", "PRODUCTION."]}
+        description="We orchestrate cloud infrastructure built on resilience, observability, and scale. Using Docker, Terraform, and automated CI/CD deployment architectures to keep platforms online."
+      />
 
-        {/* Console / Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
-          {/* Interactive Node Pipeline (Left Column) */}
-          <div className="lg:col-span-7 flex flex-col justify-between bg-surface border border-border-subtle p-8 rounded-3xl text-left">
+      {/* Console / Layout Grid */}
+      <div className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-12 lg:gap-6">
+
+        {/* Interactive Node Pipeline (Left Column) */}
+        <ScrollReveal className="lg:col-span-7">
+          <GlassPanel variant="solid" className="flex h-full flex-col justify-between p-6 text-left sm:p-10 rounded-[2rem] sm:rounded-[2.5rem]">
             <div>
-              <span className="text-[9px] font-mono tracking-[0.25em] text-text-secondary uppercase mb-6 block">
-                Cluster Architecture Path
-              </span>
-              
-              <div className="flex flex-col gap-4">
+              <span className="eyebrow mb-6 block">Cluster Architecture Path</span>
+
+              <div className="flex flex-col gap-3">
                 {pipeline.map((step) => (
                   <div
                     key={step.name}
                     onClick={() => setActiveStep(step.name)}
-                    className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all duration-300 ${
+                    className={`flex cursor-pointer items-center justify-between rounded-2xl border p-4 transition-all duration-500 ${
                       activeStep === step.name
-                        ? "border-accent bg-background/50 text-text-primary"
-                        : "border-border-subtle bg-transparent text-text-secondary hover:border-text-primary/10"
+                        ? "border-accent bg-background text-text-primary"
+                        : "border-border-subtle bg-transparent text-text-secondary hover:border-text-primary/20"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Server className={`w-4 h-4 ${activeStep === step.name ? "text-accent" : "text-text-secondary"}`} />
-                      <span className="text-xs font-mono font-bold tracking-widest">{step.name}</span>
+                      <Server className={`h-4 w-4 ${activeStep === step.name ? "text-accent" : "text-text-secondary"}`} />
+                      <span className="font-mono text-xs font-bold tracking-[0.06em]">{step.name}</span>
                     </div>
                     {activeStep === step.name && (
-                      <ArrowRight className="w-3.5 h-3.5 text-accent animate-pulse" />
+                      <ArrowRight className="h-3.5 w-3.5 animate-pulse text-accent" />
                     )}
                   </div>
                 ))}
@@ -94,61 +77,60 @@ export const CloudDevOps: React.FC = () => {
             </div>
 
             {/* Step Detail Explanation */}
-            <div className="mt-8 pt-6 border-t border-border-subtle min-h-[70px]">
-              <span className="text-[9px] font-mono tracking-widest text-accent uppercase block mb-1">
+            <div className="mt-8 min-h-[70px] border-t border-border-subtle pt-6">
+              <span className="mb-1 block font-mono text-[10px] uppercase tracking-widest text-accent">
                 Node Specification
               </span>
-              <p className="text-xs text-text-secondary leading-relaxed">
+              <p className="text-sm leading-relaxed text-text-secondary">
                 {pipeline.find((p) => p.name === activeStep)?.details}
               </p>
             </div>
-          </div>
+          </GlassPanel>
+        </ScrollReveal>
 
-          {/* Infrastructure Metrics Console (Right Column) */}
-          <div className="lg:col-span-5 flex flex-col justify-between bg-surface border border-border-subtle p-8 rounded-3xl text-left">
+        {/* Infrastructure Metrics Console (Right Column) */}
+        <ScrollReveal delay={0.1} className="lg:col-span-5">
+          <GlassPanel variant="solid" className="flex h-full flex-col justify-between p-6 text-left sm:p-10 rounded-[2rem] sm:rounded-[2.5rem]">
             <div>
-              <div className="flex justify-between items-center mb-6">
-                <span className="text-[9px] font-mono tracking-[0.25em] text-text-secondary uppercase">
-                  Telemetry Console
-                </span>
-                <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 text-[9px] font-mono">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="mb-6 flex items-center justify-between">
+                <span className="eyebrow">Telemetry Console</span>
+                <span className="flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 font-mono text-[10px] font-bold text-accent">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
                   Live Sync
                 </span>
               </div>
 
               {/* simulated metric cards */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="border border-border-subtle bg-background/50 p-4 rounded-xl">
-                  <span className="text-[9px] font-mono text-text-secondary block mb-1">AWS CPU load</span>
-                  <span className="text-xl font-mono font-bold text-text-primary">12.5%</span>
+              <div className="mb-6 grid grid-cols-2 gap-3">
+                <div className="rounded-2xl border border-border-subtle bg-background p-4">
+                  <span className="mb-1 block font-mono text-[10px] text-text-secondary">AWS CPU load</span>
+                  <span className="font-display text-3xl font-extrabold tracking-tight text-text-primary">12.5%</span>
                 </div>
-                <div className="border border-border-subtle bg-background/50 p-4 rounded-xl">
-                  <span className="text-[9px] font-mono text-text-secondary block mb-1">API Latency</span>
-                  <span className="text-xl font-mono font-bold text-text-primary">94ms</span>
+                <div className="rounded-2xl border border-border-subtle bg-background p-4">
+                  <span className="mb-1 block font-mono text-[10px] text-text-secondary">API Latency</span>
+                  <span className="font-display text-3xl font-extrabold tracking-tight text-text-primary">94ms</span>
                 </div>
               </div>
 
               {/* Console Logs Terminal */}
-              <div className="bg-background/80 border border-border-subtle p-4 rounded-xl font-mono text-[10px] text-emerald-400 flex flex-col gap-2 min-h-[140px]">
+              <div className="flex min-h-[140px] flex-col gap-2 rounded-2xl border border-border-subtle bg-background p-4 font-mono text-[10px] text-accent">
                 {consoleLogs.map((log, index) => (
                   <div key={index} className="truncate">
-                    <span className="text-text-secondary select-none">{"$ "}</span>
+                    <span className="select-none text-text-secondary">{"$ "}</span>
                     {log}
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="flex justify-between items-center text-[10px] font-mono text-text-secondary mt-6 pt-4 border-t border-border-subtle">
+            <div className="mt-6 flex items-center justify-between border-t border-border-subtle pt-4 font-mono text-[10px] text-text-secondary">
               <span>Docker Containers: OK</span>
               <span>CI/CD: SUCCESS</span>
             </div>
-          </div>
-
-        </div>
+          </GlassPanel>
+        </ScrollReveal>
 
       </div>
-    </section>
+    </Section>
   );
 };

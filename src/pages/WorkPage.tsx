@@ -1,8 +1,37 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { ScrollReveal } from "../components/ScrollReveal";
+import { PageHeader, Section } from "../components/Section";
+import { ProjectIndex } from "../components/ProjectIndex";
+import { ProjectPair, ProjectShowcase } from "../components/ProjectShowcase";
+import type { ShowcaseLayout } from "../components/ProjectShowcase";
 import { projects } from "../data/projects";
-import { ProjectPreview } from "../components/ProjectPreview";
+import type { Project } from "../data/projects";
+
+/** The first four scenes each get their own composition. */
+const leadLayouts: ShowcaseLayout[] = ["hero", "left70", "right45", "cinema"];
+
+type Scene =
+  | { kind: "single"; project: Project; index: number; layout: ShowcaseLayout }
+  | { kind: "pair"; items: [Project, Project] };
+
+/** Lead scenes, then the rest set as offset pairs (an odd one out bleeds off the edge). */
+const buildScenes = (): Scene[] => {
+  const scenes: Scene[] = [];
+  projects.slice(0, leadLayouts.length).forEach((project, index) => {
+    scenes.push({ kind: "single", project, index, layout: leadLayouts[index] });
+  });
+
+  const rest = projects.slice(leadLayouts.length);
+  for (let i = 0; i < rest.length; i += 2) {
+    const a = rest[i];
+    const b = rest[i + 1];
+    if (b) {
+      scenes.push({ kind: "pair", items: [a, b] });
+    } else {
+      scenes.push({ kind: "single", project: a, index: leadLayouts.length, layout: "bleed" });
+    }
+  }
+  return scenes;
+};
 
 export const WorkPage: React.FC = () => {
   useEffect(() => {
@@ -10,79 +39,36 @@ export const WorkPage: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const scenes = buildScenes();
+
   return (
-    <div className="w-full pt-32 pb-24">
-      {/* Page Header */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-20 text-left">
-        <ScrollReveal direction="down">
-          <span className="text-[10px] font-mono tracking-[0.25em] text-text-secondary uppercase block mb-4">
-            OUR PORTFOLIO
-          </span>
-          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight mb-8">
-            Products built <br />
-            to perform.
-          </h1>
-          <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-3xl">
-            Explore our engineering works, AI automation solutions, custom platforms, and digital product designs. Each case study details our strategy, system architecture, and outcomes.
-          </p>
-        </ScrollReveal>
-      </div>
+    <div className="w-full">
+      <PageHeader
+        eyebrow="OUR PORTFOLIO"
+        lines={["Products built", "to perform."]}
+        description="Explore our engineering works, AI automation solutions, custom platforms, and digital product designs. Each case study details our strategy, system architecture, and outcomes."
+      >
+        <ProjectIndex />
+      </PageHeader>
 
-      {/* Grid List */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {projects.map((project, index) => (
-            <ScrollReveal
-              key={project.id}
-              direction="up"
-              delay={0.05 * index}
-              className="group flex flex-col gap-6 text-left"
-            >
-              <div
-                className="h-[300px] sm:h-[380px] relative rounded-3xl overflow-hidden border border-border-subtle bg-surface/30"
-                data-cursor="view"
-              >
-                <Link to={`/work/${project.id}`} className="absolute inset-0 block">
-                  <ProjectPreview id={project.id} />
-                  <div className="absolute inset-0 bg-background/25 group-hover:bg-background/0 transition-all duration-300 pointer-events-none" />
-                </Link>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-3 text-xs font-mono">
-                  <span className="text-accent font-semibold">{project.number}</span>
-                  <span className="text-text-secondary uppercase tracking-wider text-[10px]">
-                    {project.category}
-                  </span>
-                  <span className={`text-[8px] font-mono uppercase tracking-wider px-2 py-0.5 rounded ${
-                    project.status === "Ongoing" 
-                      ? "bg-amber-500/10 text-amber-500 border border-amber-500/20" 
-                      : "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
-                  }`}>
-                    {project.status}
-                  </span>
-                </div>
-                <h3 className="text-xl font-bold text-text-primary group-hover:text-accent transition-colors duration-300">
-                  <Link to={`/work/${project.id}`}>{project.title}</Link>
-                </h3>
-                <p className="text-text-secondary text-xs sm:text-sm leading-relaxed max-w-lg">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {project.technologies.slice(0, 4).map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-[9px] font-mono text-text-secondary bg-surface border border-border-subtle px-2 py-0.5 rounded"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </ScrollReveal>
-          ))}
+      {/* One scene per project, each with its own composition and colour environment */}
+      <Section className="pt-24 sm:pt-32">
+        <div className="flex flex-col gap-40 sm:gap-52 lg:gap-64">
+          {scenes.map((scene) =>
+            scene.kind === "pair" ? (
+              <ProjectPair key={scene.items[0].id} items={scene.items} titleAs="h2" />
+            ) : (
+              <ProjectShowcase
+                key={scene.project.id}
+                project={scene.project}
+                index={scene.index}
+                layout={scene.layout}
+                titleAs="h2"
+              />
+            ),
+          )}
         </div>
-      </div>
+      </Section>
     </div>
   );
 };

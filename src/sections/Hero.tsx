@@ -1,111 +1,128 @@
-import React from "react";
-import { ArrowUpRight } from "lucide-react";
+import React, { useRef } from "react";
+import { ArrowUpRight, ArrowDown } from "lucide-react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Button } from "../components/Button";
+import { EditorialHeading } from "../components/EditorialHeading";
+import { RotatingBadge } from "../components/RotatingBadge";
 import { ScrollReveal } from "../components/ScrollReveal";
+import { SectionLabel } from "../components/Section";
 import { ThreeArchitecture } from "../components/ThreeArchitecture";
-import { motion } from "framer-motion";
+import { projects } from "../data/projects";
+import { PREMIUM_EASE } from "../lib/motion";
+import { pad } from "../lib/projectEnv";
 
 export const Hero: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const headlineY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const blockY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+
+  const scrollToIntro = () => {
+    const target = document.getElementById("intro-strip");
+    if (target) target.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-24 px-6 md:px-12 overflow-hidden select-none bg-background">
-      
-      {/* Background Decorative Grid with centered radial mask fade */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--grid-line)_1px,transparent_1px),linear-gradient(to_bottom,var(--grid-line)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_40%,transparent_100%)] opacity-70" />
-      
-      {/* Dynamic backdrop mesh glows */}
-      <div className="absolute top-1/4 left-1/3 -translate-x-1/2 w-[380px] h-[380px] bg-accent/5 [html.light_&]:bg-accent/8 rounded-full blur-[90px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/3 translate-x-1/2 w-[380px] h-[380px] bg-accent-secondary/5 [html.light_&]:bg-accent-secondary/8 rounded-full blur-[90px] pointer-events-none" />
-
-      <div className="relative max-w-7xl mx-auto z-10 w-full py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center min-h-[75vh]">
-          
-          {/* Left Column: Bold Editorial Copy */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left">
-            
-            {/* Availability Badge */}
-            <ScrollReveal delay={0.1} direction="down">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border-subtle bg-surface/50 backdrop-blur-sm mb-6 text-[10px] font-mono tracking-widest text-text-secondary uppercase select-none">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Available for selected projects
-              </div>
-            </ScrollReveal>
- 
-            {/* Hero Eyebrow */}
-            <ScrollReveal delay={0.2}>
-              <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-text-secondary mb-4 block">
-                CREATIVE TECHNOLOGY STUDIO
-              </span>
-            </ScrollReveal>
- 
-            {/* Main Headline */}
-            <ScrollReveal delay={0.3} className="max-w-xl">
-              <h1 className="text-4xl sm:text-5xl md:text-6.5xl font-bold tracking-tight text-reveal-gradient leading-[1.08] mb-6">
-                We build digital <br />
-                experiences that <br />
-                <span className="accent-text-gradient">move businesses forward</span>.
-              </h1>
-            </ScrollReveal>
- 
-            {/* Supporting Copy */}
-            <ScrollReveal delay={0.4} className="max-w-lg">
-              <p className="text-text-secondary text-sm sm:text-base leading-relaxed mb-8">
-                IDEV Creative Coders combines design, development, and emerging technology to create websites, applications, and digital products that are built to perform.
-              </p>
-            </ScrollReveal>
- 
-            {/* Action Controls */}
-            <ScrollReveal delay={0.5}>
-              <div className="flex flex-col sm:flex-row gap-4 items-center justify-start w-full">
-                <Button variant="primary" to="/contact" className="w-full sm:w-auto">
-                  Start a Project <ArrowUpRight className="w-4 h-4 ml-1" />
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    const target = document.getElementById("intro-strip");
-                    if (target) target.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="w-full sm:w-auto"
-                >
-                  Explore Our Work
-                </Button>
-              </div>
-            </ScrollReveal>
-          </div>
- 
-          {/* Right Column: Interactive WebGL Canvas */}
-          <div className="lg:col-span-5 w-full h-[320px] sm:h-[400px] lg:h-[500px] relative bg-surface/10 rounded-3xl border border-border-subtle/50 backdrop-blur-sm overflow-hidden p-4">
-            <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 text-[8px] font-mono tracking-widest text-text-secondary uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              Interactive WebGL Node System
-            </div>
-            <ThreeArchitecture />
-          </div>
-
+    <section ref={sectionRef} className="relative z-10 flex min-h-[100svh] select-none flex-col pt-24 sm:pt-28">
+      <div className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col px-5 sm:px-8 md:px-12">
+        {/* Technical metadata row */}
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 sm:mb-10">
+          <ScrollReveal delay={0.2} direction="none">
+            <SectionLabel>CREATIVE TECHNOLOGY STUDIO</SectionLabel>
+          </ScrollReveal>
+          <ScrollReveal delay={0.3} direction="none" className="hidden md:block">
+            <span className="eyebrow">DESIGN × CODE × IDEAS</span>
+          </ScrollReveal>
+          <ScrollReveal delay={0.4} direction="none">
+            <span className="inline-flex items-center gap-2.5 rounded-full border border-[var(--line-strong)] px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.06em] text-text-primary">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent-fill [html.light_&]:outline [html.light_&]:outline-1 [html.light_&]:outline-text-primary" />
+              Available for selected projects
+            </span>
+          </ScrollReveal>
         </div>
-      </div>
 
-      {/* Subtle Floating Technology Matrix particles in background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(6)].map((_, idx) => (
+        <div className="grid flex-1 grid-cols-12 gap-y-10 lg:gap-x-8">
+          {/* Oversized headline + supporting copy */}
+          <div className="col-span-12 flex flex-col justify-between gap-10 text-left lg:col-span-7">
+            <motion.div style={reduceMotion ? undefined : { y: headlineY }}>
+              <EditorialHeading
+                as="h1"
+                size="hero"
+                delay={0.25}
+                lines={[
+                  // Four wide lines on desktop; they wrap naturally into a stacked poster on phones
+                  "We build digital",
+                  "experiences that",
+                  "move businesses",
+                  <span key="forward" className="block text-accent">forward.</span>,
+                ]}
+              />
+            </motion.div>
+
+            <ScrollReveal delay={0.6} distance={40}>
+              <div className="flex max-w-xl flex-col gap-7">
+                <p className="text-base leading-relaxed text-text-secondary sm:text-lg">
+                  IDEV Creative Coders combines design, development, and emerging technology to create websites, applications, and digital products that are built to perform.
+                </p>
+                <div className="flex w-full flex-col gap-3 sm:flex-row">
+                  <Button variant="primary" to="/contact" className="w-full sm:w-auto">
+                    Start a Project <ArrowUpRight className="ml-1 h-4 w-4" />
+                  </Button>
+                  <Button variant="secondary" onClick={scrollToIntro} className="w-full sm:w-auto">
+                    Explore Our Work
+                  </Button>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+
+          {/* Colour-blocked node system, dropping into the next section on wide screens */}
           <motion.div
-            key={idx}
-            className="absolute w-[2px] h-[2px] bg-accent/40 rounded-full"
-            style={{
-              top: `${Math.random() * 80 + 10}%`,
-              left: `${Math.random() * 80 + 10}%`,
-            }}
-            animate={{
-              y: [0, -40, 0],
-              opacity: [0.2, 0.7, 0.2],
-            }}
-            transition={{
-              duration: Math.random() * 6 + 6,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.4, delay: 0.5, ease: PREMIUM_EASE }}
+            style={reduceMotion ? undefined : { y: blockY }}
+            className="relative col-span-12 lg:col-span-5 lg:mt-14 lg:self-start"
+          >
+            <div className="relative h-[360px] overflow-hidden rounded-[2rem] bg-[var(--hero-block)] sm:h-[480px] sm:rounded-[2.5rem] lg:h-[min(72svh,640px)]">
+              <div
+                className="pointer-events-none absolute inset-0 opacity-25"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(to right, var(--node-base) 1px, transparent 1px), linear-gradient(to bottom, var(--node-base) 1px, transparent 1px)",
+                  backgroundSize: "3.5rem 3.5rem",
+                }}
+              />
+              <div className="absolute inset-0">
+                <ThreeArchitecture />
+              </div>
+              <span className="absolute left-4 top-4 z-[2] flex items-center gap-2 rounded-full bg-brand-warm px-3.5 py-2 font-mono text-[9px] font-bold uppercase tracking-[0.06em] text-brand-ink sm:left-6 sm:top-6">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-ink" />
+                Interactive WebGL Node System
+              </span>
+            </div>
+            <RotatingBadge
+              text="DESIGN × CODE × IDEAS • "
+              className="absolute -bottom-8 left-4 h-24 w-24 sm:h-28 sm:w-28 lg:-left-10 lg:bottom-16 lg:h-32 lg:w-32"
+            />
+          </motion.div>
+        </div>
+
+        {/* Scroll cue + index */}
+        <div className="mt-16 flex items-center justify-between gap-4 border-t border-[var(--line-strong)] py-5 lg:mt-12 lg:w-[56%]">
+          <button
+            type="button"
+            onClick={scrollToIntro}
+            className="group inline-flex items-center gap-3 font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-text-primary"
+          >
+            <span className="grid h-8 w-8 place-items-center rounded-full border border-[var(--line-strong)] transition-colors duration-500 group-hover:bg-accent-fill group-hover:text-on-accent">
+              <ArrowDown className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-y-0.5" />
+            </span>
+            Scroll to explore
+          </button>
+          <span className="eyebrow hidden sm:block">Selected work — {pad(projects.length)}</span>
+        </div>
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ScrollReveal } from "../components/ScrollReveal";
+import { Section, SectionHeader } from "../components/Section";
 
 interface TechNode {
   name: string;
@@ -43,125 +44,113 @@ export const TechnologyConstellation: React.FC = () => {
 
   // Draw lines from core node to category child nodes
   const categories = [
-    { name: "Frontend", id: "frontend", color: "#6c63ff" },
-    { name: "Backend & Data", id: "backend", color: "#8b5cf6" },
-    { name: "Cloud & Infrastructure", id: "cloud", color: "#06b6d4" },
-    { name: "Identity & Security", id: "security", color: "#ec4899" },
-    { name: "AI Integration", id: "ai", color: "#f59e0b" },
+    { name: "Frontend", id: "frontend", color: "#d8ff3e" },
+    { name: "Backend & Data", id: "backend", color: "#7c3aed" },
+    { name: "Cloud & Infrastructure", id: "cloud", color: "#55d6ff" },
+    { name: "Identity & Security", id: "security", color: "#ff5ccf" },
+    { name: "AI Integration", id: "ai", color: "#f4f1ea" },
   ];
 
   return (
-    <section className="py-24 bg-background border-b border-border-subtle select-none">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        
-        {/* Section Header */}
-        <div className="max-w-xl text-left mb-16">
-          <ScrollReveal direction="down">
-            <span className="text-[10px] font-mono tracking-[0.25em] text-text-secondary uppercase block mb-4">
-              06 // TECHNOLOGY STEERAGE
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4 text-reveal-gradient">
-              Technology Constellation.
-            </h2>
-            <p className="text-text-secondary text-sm sm:text-base leading-relaxed">
-              We focus on a highly robust stack built around modern standards. Rather than adopting every trend, we master the tools that power stable systems.
-            </p>
-          </ScrollReveal>
-        </div>
+    <Section className="select-none">
+      <SectionHeader
+        eyebrow="06 // TECHNOLOGY STEERAGE"
+        lines={["Technology Constellation."]}
+        description="We focus on a highly robust stack built around modern standards. Rather than adopting every trend, we master the tools that power stable systems."
+      />
 
-        {/* Constellation Canvas Block */}
-        <ScrollReveal direction="up" delay={0.2}>
-          <div className="relative border border-border-subtle rounded-3xl bg-surface p-6 md:p-12 overflow-hidden min-h-[500px] flex items-center justify-center">
-            
-            {/* SVG Connecting lines layers */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-              {nodes.map((node) => {
-                if (node.category === "core") return null;
-                // Core coordinates is always 50% / 50%
-                return (
-                  <line
-                    key={node.name}
-                    x1="50%"
-                    y1="50%"
-                    x2={`${node.x}%`}
-                    y2={`${node.y}%`}
-                    stroke="var(--accent)"
-                    strokeWidth={activeCategory === node.category ? "2" : "1"}
-                    strokeDasharray={activeCategory === node.category ? "0" : "3 3"}
-                    className="transition-all duration-300"
-                    opacity={activeCategory === node.category ? "0.9" : "0.3"}
-                  />
-                );
-              })}
-            </svg>
+      {/* Constellation Canvas Block */}
+      <ScrollReveal direction="up" delay={0.1}>
+        <div className="panel relative flex min-h-[500px] items-center justify-center overflow-hidden rounded-[2rem] p-6 sm:rounded-[2.5rem] md:p-12">
+          <div className="stage-grid pointer-events-none absolute inset-0 opacity-60" />
 
-            {/* Interactive category toggles (floating desktop HUD) */}
-            <div className="absolute top-4 left-4 right-4 md:right-auto md:bottom-4 md:top-auto z-10 flex flex-wrap gap-2 justify-start max-w-lg">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onMouseEnter={() => setActiveCategory(cat.id)}
-                  onMouseLeave={() => setActiveCategory(null)}
-                  className={`px-3 py-1.5 rounded-lg border text-[9px] font-mono tracking-widest uppercase transition-all duration-300 ${
-                    activeCategory === cat.id
-                      ? "border-accent bg-accent/10 text-text-primary"
-                      : "border-border-subtle bg-background/50 text-text-secondary"
+          {/* SVG Connecting lines layers */}
+          <svg className="pointer-events-none absolute inset-0 z-0 h-full w-full">
+            {nodes.map((node) => {
+              if (node.category === "core") return null;
+              // Core coordinates is always 50% / 50%
+              return (
+                <line
+                  key={node.name}
+                  x1="50%"
+                  y1="50%"
+                  x2={`${node.x}%`}
+                  y2={`${node.y}%`}
+                  stroke="var(--accent)"
+                  strokeWidth={activeCategory === node.category ? "2" : "1"}
+                  strokeDasharray={activeCategory === node.category ? "0" : "3 3"}
+                  className="transition-all duration-500"
+                  opacity={activeCategory === node.category ? "0.9" : "0.3"}
+                />
+              );
+            })}
+          </svg>
+
+          {/* Interactive category toggles (floating desktop HUD) */}
+          <div className="absolute left-4 right-4 top-4 z-10 flex max-w-lg flex-wrap justify-start gap-2 md:bottom-4 md:right-auto md:top-auto">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onMouseEnter={() => setActiveCategory(cat.id)}
+                onMouseLeave={() => setActiveCategory(null)}
+                className={`rounded-full border px-4 py-2 font-mono text-[10px] uppercase tracking-widest transition-all duration-500 ${
+                  activeCategory === cat.id
+                    ? "border-accent bg-accent/10 text-text-primary"
+                    : "border-border-subtle bg-background text-text-secondary"
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+
+          {/* Nodes Coordinates Plot */}
+          <div className="absolute inset-0 z-10 h-full w-full">
+            {nodes.map((node) => {
+              const isCore = node.category === "core";
+              const isMatchingCategory = activeCategory === node.category;
+
+              return (
+                <div
+                  key={node.name}
+                  style={{
+                    left: `${node.x}%`,
+                    top: `${node.y}%`,
+                  }}
+                  className={`group absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 transition-all duration-500 ${
+                    isCore ? "scale-110" : ""
                   }`}
                 >
-                  {cat.name}
-                </button>
-              ))}
-            </div>
-
-            {/* Nodes Coordinates Plot */}
-            <div className="absolute inset-0 w-full h-full z-10">
-              {nodes.map((node) => {
-                const isCore = node.category === "core";
-                const isMatchingCategory = activeCategory === node.category;
-                
-                return (
+                  {/* Node Dot */}
                   <div
-                    key={node.name}
-                    style={{
-                      left: `${node.x}%`,
-                      top: `${node.y}%`,
-                    }}
-                    className={`absolute -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 group transition-all duration-300 ${
-                      isCore ? "scale-110" : ""
+                    className={`h-2.5 w-2.5 rounded-full border-2 transition-all duration-500 ${
+                      isCore
+                        ? "scale-125 border-text-primary bg-accent"
+                        : isMatchingCategory
+                        ? "scale-110 border-accent bg-accent shadow-[0_0_10px_var(--accent)]"
+                        : "border-text-secondary bg-surface group-hover:border-accent"
+                    }`}
+                  />
+
+                  {/* Node Text label */}
+                  <span
+                    className={`rounded-full px-2.5 py-1 font-mono text-[10px] font-bold tracking-wider transition-all duration-500 ${
+                      isCore
+                        ? "border border-accent/20 bg-accent/10 uppercase text-accent"
+                        : isMatchingCategory
+                        ? "border border-accent/30 bg-surface text-text-primary"
+                        : "border border-transparent bg-background/60 text-text-secondary group-hover:text-text-primary"
                     }`}
                   >
-                    {/* Node Dot */}
-                    <div
-                      className={`w-2.5 h-2.5 rounded-full border-2 transition-all duration-300 ${
-                        isCore
-                          ? "bg-accent border-text-primary scale-125"
-                          : isMatchingCategory
-                          ? "bg-accent border-accent scale-110 shadow-[0_0_10px_rgb(108,99,255,0.8)]"
-                          : "bg-surface border-text-secondary group-hover:border-accent"
-                      }`}
-                    />
-                    
-                    {/* Node Text label */}
-                    <span
-                      className={`text-[10px] font-mono tracking-wider font-bold transition-all duration-300 px-1.5 py-0.5 rounded ${
-                        isCore
-                          ? "bg-accent/10 border border-accent/20 text-accent uppercase font-bold"
-                          : isMatchingCategory
-                          ? "bg-surface border border-accent/30 text-text-primary"
-                          : "text-text-secondary group-hover:text-text-primary bg-background/50 border border-transparent"
-                      }`}
-                    >
-                      {node.name}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-
+                    {node.name}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-        </ScrollReveal>
 
-      </div>
-    </section>
+        </div>
+      </ScrollReveal>
+    </Section>
   );
 };

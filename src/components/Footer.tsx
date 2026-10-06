@@ -20,32 +20,31 @@ export const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="bg-surface border-t border-border-subtle pt-16 pb-8 px-6 md:px-12 select-none">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+    <footer className="relative select-none overflow-hidden border-t border-[var(--line-strong)] pt-16 sm:pt-24">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-8 md:px-12">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8">
           {/* Brand Info */}
-          <div className="md:col-span-2 flex flex-col gap-4">
-            <Link to="/" className="flex items-center group max-w-fit">
+          <div className="flex flex-col gap-6 md:col-span-5">
+            <Link to="/" className="flex max-w-fit items-center">
               <Logo />
             </Link>
-            <p className="text-text-secondary text-sm max-w-sm mt-2 leading-relaxed text-left">
+            <p className="max-w-sm text-left text-sm leading-relaxed text-text-secondary">
               IDEV Creative Coders combines design, development, and emerging technology to create websites, applications, and digital products that are built to perform.
             </p>
           </div>
 
           {/* Quick Links */}
-          <div className="flex flex-col gap-4 text-left">
-            <h4 className="text-[10px] font-mono tracking-widest text-text-primary uppercase">
-              Navigation
-            </h4>
-            <ul className="flex flex-col gap-2">
+          <div className="flex flex-col gap-5 text-left md:col-span-3 md:col-start-7">
+            <h4 className="eyebrow">Navigation</h4>
+            <ul className="flex flex-col gap-1">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="text-text-secondary hover:text-text-primary text-xs uppercase tracking-wider transition-colors duration-300"
+                    className="group inline-flex items-center gap-2 font-display text-3xl font-extrabold uppercase tracking-[-0.02em] text-text-primary transition-colors duration-500 [font-stretch:88%] hover:text-accent"
                   >
                     {link.name}
+                    <ArrowUpRight className="h-5 w-5 -translate-x-1 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100" />
                   </Link>
                 </li>
               ))}
@@ -53,44 +52,39 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Contact Details & Socials */}
-          <div className="flex flex-col gap-4 text-left">
-            <h4 className="text-[10px] font-mono tracking-widest text-text-primary uppercase">
-              Get In Touch
-            </h4>
-            <div className="flex flex-col gap-2 text-xs text-text-secondary leading-relaxed">
+          <div className="flex flex-col gap-5 text-left md:col-span-3">
+            <h4 className="eyebrow">Get In Touch</h4>
+            <div className="flex flex-col gap-2.5 text-sm leading-relaxed text-text-secondary">
               <a
                 href="mailto:idevccv@gmail.com"
-                className="hover:text-accent transition-colors duration-300 flex items-center gap-1 group w-max"
+                className="group flex w-max items-center gap-1 transition-colors duration-300 hover:text-accent"
               >
                 idevccv@gmail.com
-                <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <ArrowUpRight className="h-3 w-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </a>
-              <a
-                href="tel:+918610582676"
-                className="hover:text-accent transition-colors duration-300 w-max"
-              >
+              <a href="tel:+918610582676" className="w-max transition-colors duration-300 hover:text-accent">
                 +91 86105 82676
               </a>
               <a
                 href="https://idevpro.in/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-accent transition-colors duration-300 flex items-center gap-1 group w-max"
+                className="group flex w-max items-center gap-1 transition-colors duration-300 hover:text-accent"
               >
                 idevpro.in
-                <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <ArrowUpRight className="h-3 w-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </a>
             </div>
 
             {/* Social Grid */}
-            <div className="flex items-center gap-4 mt-4">
+            <div className="mt-2 flex flex-wrap items-center gap-2">
               {socialLinks.map((social) => (
                 <a
                   key={social.name}
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-text-secondary hover:text-text-primary transition-colors duration-300"
+                  className="rounded-full border border-[var(--line-strong)] px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.06em] text-text-secondary transition-colors duration-300 hover:border-text-primary hover:bg-text-primary hover:text-background"
                 >
                   {social.name}
                 </a>
@@ -100,14 +94,22 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Banner */}
-        <div className="border-t border-border-subtle pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-[10px] font-mono text-text-secondary">
+        <div className="mt-16 flex flex-col items-start justify-between gap-3 border-t border-border-subtle pt-6 sm:mt-24 md:flex-row md:items-center">
+          <p className="font-mono text-[10px] text-text-secondary">
             &copy; {currentYear} IDEV Creative Coders. All Rights Reserved.
           </p>
-          <p className="text-[10px] font-mono text-text-secondary flex items-center gap-1">
+          <p className="flex items-center gap-1 font-mono text-[10px] text-text-secondary">
             Creative Technology. Digital Experiences.
           </p>
         </div>
+      </div>
+
+      {/* Oversized wordmark, cropped by the bottom edge */}
+      <div
+        aria-hidden="true"
+        className="ghost-wordmark pointer-events-none mt-6 translate-y-[0.12em] text-center text-[clamp(8rem,36vw,36rem)] leading-[0.78]"
+      >
+        IDEV
       </div>
     </footer>
   );

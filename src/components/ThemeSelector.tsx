@@ -75,17 +75,17 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ align = "bottom" }
     <div className="relative inline-block text-left" ref={containerRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center p-2 rounded-full border border-border-subtle hover:border-text-primary/30 bg-surface/50 backdrop-blur-sm transition-colors duration-300 focus:outline-none focus:ring-1 focus:ring-accent cursor-pointer"
+        className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--line-strong)] bg-transparent transition-colors duration-300 hover:border-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-accent cursor-pointer"
         aria-label="Select theme"
       >
         {getIcon()}
       </button>
 
       {isOpen && (
-        <div className={`absolute right-0 w-32 rounded-xl bg-surface border border-border-subtle shadow-xl z-50 overflow-hidden ${
-          align === "top" ? "bottom-full mb-2" : "top-full mt-2"
+        <div className={`panel absolute right-0 w-36 rounded-2xl z-50 overflow-hidden ${
+          align === "top" ? "bottom-full mb-2" : "top-full mt-3"
         }`}>
-          <div className="py-1">
+          <div className="p-1.5">
             {(["light", "dark", "system"] as Theme[]).map((mode) => (
               <button
                 key={mode}
@@ -93,8 +93,8 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ align = "bottom" }
                   setTheme(mode);
                   setIsOpen(false);
                 }}
-                className={`w-full flex items-center gap-2 px-4 py-2 text-xs uppercase tracking-wider font-mono hover:bg-background transition-colors duration-200 cursor-pointer ${
-                  theme === mode ? "text-accent font-semibold" : "text-text-secondary"
+                className={`w-full flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-[11px] uppercase tracking-[0.06em] font-mono font-bold hover:bg-text-primary/5 transition-colors duration-200 cursor-pointer ${
+                  theme === mode ? "text-accent" : "text-text-secondary"
                 }`}
               >
                 {mode === "light" && <Sun className="w-3.5 h-3.5" />}

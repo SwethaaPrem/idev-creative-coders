@@ -6,36 +6,25 @@ interface MarqueeProps {
   className?: string;
 }
 
-export const Marquee: React.FC<MarqueeProps> = ({
-  items,
-  speed = "medium",
-  className = "",
-}) => {
-  const getSpeedClass = () => {
-    switch (speed) {
-      case "slow":
-        return "animation-duration-[40s]";
-      case "fast":
-        return "animation-duration-[15s]";
-      case "medium":
-      default:
-        return "animation-duration-[25s]";
-    }
-  };
+export const Marquee: React.FC<MarqueeProps> = ({ items, speed = "medium", className = "" }) => {
+  const duration = { slow: "60s", medium: "40s", fast: "20s" }[speed];
 
-  // Duplicate items array a few times to fill screen widths
+  // Duplicate the items so the strip always fills (and loops across) wide screens
   const marqueeItems = [...items, ...items, ...items, ...items];
 
   return (
-    <div className={`marquee-container relative w-full overflow-hidden py-4 border-y border-border-subtle bg-surface/30 backdrop-blur-sm ${className}`}>
-      <div className={`animate-marquee-scroll flex gap-8 items-center ${getSpeedClass()}`}>
+    <div
+      className={`marquee-container relative w-full overflow-hidden border-y border-[var(--line-strong)] py-5 [mask-image:linear-gradient(to_right,transparent,#000_6%,#000_94%,transparent)] ${className}`}
+    >
+      <div className="animate-marquee-scroll flex items-center gap-10" style={{ animationDuration: duration }}>
         {marqueeItems.map((item, idx) => (
           <div
             key={idx}
-            className="flex items-center gap-4 text-xs font-mono font-medium uppercase tracking-widest text-text-secondary whitespace-nowrap"
+            className="flex items-center gap-10 whitespace-nowrap font-display text-[clamp(2.25rem,5.5vw,5rem)] font-extrabold uppercase leading-none tracking-[-0.015em] [font-stretch:88%]"
           >
-            <span>{item}</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+            {/* Every other word is outlined, for a loud/quiet rhythm */}
+            <span className={idx % 2 === 0 ? "text-text-primary" : "outline-text text-text-primary"}>{item}</span>
+            <span className="star h-[0.5em] w-[0.5em] text-accent" />
           </div>
         ))}
       </div>

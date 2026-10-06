@@ -1,6 +1,7 @@
 import React from "react";
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { PREMIUM_EASE } from "../lib/motion";
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -15,10 +16,16 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   children,
   direction = "up",
   delay = 0,
-  duration = 0.6,
-  distance = 30,
+  duration = 0.9,
+  distance = 36,
   className = "",
 }) => {
+  const reduceMotion = useReducedMotion();
+
+  if (reduceMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
   const getDirections = () => {
     switch (direction) {
       case "up":
@@ -35,19 +42,13 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
     }
   };
 
-  const variants = getDirections();
-
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
-      transition={{
-        duration: duration,
-        delay: delay,
-        ease: [0.16, 1, 0.3, 1], // premium custom cubic-bezier
-      }}
-      variants={variants}
+      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+      transition={{ duration, delay, ease: PREMIUM_EASE }}
+      variants={getDirections()}
       className={className}
     >
       {children}

@@ -1,4 +1,5 @@
 import React from "react";
+import { EditorialHeading } from "../components/EditorialHeading";
 import { Marquee } from "../components/Marquee";
 import { ScrollReveal } from "../components/ScrollReveal";
 
@@ -19,21 +20,23 @@ export const IntroStrip: React.FC = () => {
   ];
 
   return (
-    <section id="intro-strip" className="py-20 bg-background overflow-hidden border-b border-border-subtle">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-5">
-            <ScrollReveal direction="right">
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text-primary uppercase font-sans">
-                Designing.<br />
-                Developing.<br />
-                Deploying.
-              </h2>
-            </ScrollReveal>
+    <section id="intro-strip" className="relative overflow-hidden pb-24 pt-40 sm:pb-36 sm:pt-52 lg:pt-64">
+      <div className="mx-auto mb-20 w-full max-w-[1400px] px-5 sm:mb-28 sm:px-8 md:px-12">
+        <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-9">
+            <EditorialHeading
+              size="section"
+              className="!text-[clamp(3rem,10.5vw,9.25rem)]"
+              lines={[
+                "Designing.",
+                <span key="developing" className="outline-text block lg:pl-[0.9em]">Developing.</span>,
+                <span key="deploying" className="block text-accent lg:pl-[1.7em]">Deploying.</span>,
+              ]}
+            />
           </div>
-          <div className="lg:col-span-7">
-            <ScrollReveal direction="left">
-              <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-xl">
+          <div className="lg:col-span-3 lg:pb-4">
+            <ScrollReveal delay={0.2}>
+              <p className="max-w-sm text-base leading-relaxed text-text-secondary sm:text-lg">
                 We transform ideas into reliable digital products through thoughtful design, clean engineering, and modern technology.
               </p>
             </ScrollReveal>

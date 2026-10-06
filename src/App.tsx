@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { MotionConfig } from "framer-motion";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { CustomCursor } from "./components/CustomCursor";
@@ -14,33 +15,35 @@ import { ScrollToHash } from "./components/ScrollToHash";
 
 function App() {
   return (
-    <Router>
-      <ScrollToHash />
-      <div className="relative min-h-screen bg-background text-text-primary overflow-x-hidden flex flex-col justify-between selection:bg-accent/30 selection:text-white">
-        {/* Custom Interactive Desktop Cursor */}
-        <CustomCursor />
+    <MotionConfig reducedMotion="user">
+      <Router>
+        <ScrollToHash />
+        <div className="relative min-h-screen bg-background text-text-primary overflow-x-hidden flex flex-col justify-between">
+          {/* Custom Interactive Desktop Cursor */}
+          <CustomCursor />
 
-        {/* Global Navigation Header */}
-        <Navbar />
+          {/* Global Navigation Header */}
+          <Navbar />
 
-        {/* Main Content Router */}
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/process" element={<ProcessPage />} />
-            <Route path="/work" element={<WorkPage />} />
-            <Route path="/work/:id" element={<CaseStudy />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
+          {/* Main Content Router */}
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/process" element={<ProcessPage />} />
+              <Route path="/work" element={<WorkPage />} />
+              <Route path="/work/:id" element={<CaseStudy />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
 
-        {/* Global Site Footer */}
-        <Footer />
-      </div>
-    </Router>
+          {/* Global Site Footer */}
+          <Footer />
+        </div>
+      </Router>
+    </MotionConfig>
   );
 }
 

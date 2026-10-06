@@ -25,14 +25,14 @@ export const Button: React.FC<ButtonProps> = ({
   disabled = false,
 }) => {
   const baseStyle =
-    "relative inline-flex items-center justify-center font-sans text-sm font-medium tracking-wide uppercase transition-all duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden";
+    "relative inline-flex items-center justify-center whitespace-nowrap font-mono text-xs font-bold tracking-[0.06em] uppercase transition-colors duration-500 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden";
 
   const getVariantStyles = () => {
     switch (variant) {
       case "primary":
-        return "px-7 py-3.5 bg-text-primary text-background border border-text-primary hover:bg-transparent hover:text-text-primary";
+        return "px-8 py-4 bg-[var(--btn-bg)] text-[var(--btn-fg)] border border-[var(--btn-bg)] hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-fg)] hover:border-[var(--accent-edge)]";
       case "secondary":
-        return "px-7 py-3.5 bg-transparent text-text-primary border border-border-subtle hover:border-text-primary";
+        return "px-8 py-4 bg-transparent text-text-primary border border-[var(--line-strong)] hover:border-text-primary hover:bg-text-primary hover:text-background";
       case "text":
         return "px-0 py-2 bg-transparent text-text-primary hover:text-accent border-b border-transparent hover:border-accent rounded-none";
       default:

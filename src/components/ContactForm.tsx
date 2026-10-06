@@ -168,9 +168,9 @@ export const ContactForm: React.FC = () => {
 
   if (status === "success") {
     return (
-      <div className="bg-surface border border-border-subtle p-8 md:p-12 rounded-3xl flex flex-col items-center text-center justify-center min-h-[450px]">
+      <div className="panel p-8 md:p-12 rounded-[2rem] sm:rounded-[2.5rem] flex flex-col items-center text-center justify-center min-h-[450px]">
         <CheckCircle2 className="w-16 h-16 text-accent mb-6 animate-pulse" />
-        <h3 className="text-2xl font-bold mb-2">Inquiry Sent Successfully!</h3>
+        <h3 className="font-display text-3xl font-extrabold tracking-[-0.015em] mb-2">Inquiry Sent Successfully!</h3>
         <p className="text-text-secondary text-sm max-w-sm mb-8">
           Thank you for reaching out to IDEV Creative Coders. Our technical team will review your project needs and email you back within 24 hours.
         </p>
@@ -182,8 +182,8 @@ export const ContactForm: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-surface border border-border-subtle p-8 md:p-12 rounded-3xl flex flex-col gap-6 text-left">
-      <h3 className="text-xl font-bold mb-2 tracking-wide uppercase">Start a Conversation</h3>
+    <form onSubmit={handleSubmit} className="panel p-8 md:p-12 rounded-[2rem] sm:rounded-[2.5rem] flex flex-col gap-6 text-left">
+      <h3 className="font-display text-3xl font-extrabold tracking-[-0.015em] mb-2 uppercase [font-stretch:88%]">Start a Conversation</h3>
       
       {status === "error" && (
         <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl flex items-center gap-3 text-sm">
@@ -194,7 +194,7 @@ export const ContactForm: React.FC = () => {
 
       {/* Name Input */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="name" className="text-xs uppercase tracking-widest text-text-secondary">
+        <label htmlFor="name" className="font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-text-secondary">
           Name <span className="text-accent">*</span>
         </label>
         <input
@@ -205,7 +205,7 @@ export const ContactForm: React.FC = () => {
           onChange={handleChange}
           disabled={status === "submitting"}
           placeholder="What should we call you?"
-          className={`bg-background border px-4 py-3 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-accent transition-all duration-300 ${
+          className={`bg-background border px-5 py-3.5 rounded-2xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 ${
             errors.name ? "border-red-500/50" : "border-border-subtle"
           }`}
         />
@@ -214,7 +214,7 @@ export const ContactForm: React.FC = () => {
 
       {/* Email Input */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="email" className="text-xs uppercase tracking-widest text-text-secondary">
+        <label htmlFor="email" className="font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-text-secondary">
           Email <span className="text-accent">*</span>
         </label>
         <input
@@ -225,7 +225,7 @@ export const ContactForm: React.FC = () => {
           onChange={handleChange}
           disabled={status === "submitting"}
           placeholder="yourname@example.com"
-          className={`bg-background border px-4 py-3 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-accent transition-all duration-300 ${
+          className={`bg-background border px-5 py-3.5 rounded-2xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 ${
             errors.email ? "border-red-500/50" : "border-border-subtle"
           }`}
         />
@@ -234,7 +234,7 @@ export const ContactForm: React.FC = () => {
 
       {/* Company Input */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="company" className="text-xs uppercase tracking-widest text-text-secondary">
+        <label htmlFor="company" className="font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-text-secondary">
           Company <span className="text-text-secondary/50 font-normal">(Optional)</span>
         </label>
         <input
@@ -245,7 +245,7 @@ export const ContactForm: React.FC = () => {
           onChange={handleChange}
           disabled={status === "submitting"}
           placeholder="Your company name"
-          className="bg-background border border-border-subtle px-4 py-3 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-accent transition-all duration-300"
+          className="bg-background border border-border-subtle px-5 py-3.5 rounded-2xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300"
         />
       </div>
 
@@ -253,7 +253,7 @@ export const ContactForm: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Project Type */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="projectType" className="text-xs uppercase tracking-widest text-text-secondary">
+          <label htmlFor="projectType" className="font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-text-secondary">
             Project Type
           </label>
           <select
@@ -262,7 +262,7 @@ export const ContactForm: React.FC = () => {
             value={form.projectType}
             onChange={handleChange}
             disabled={status === "submitting"}
-            className="bg-background border border-border-subtle px-4 py-3 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-accent transition-all duration-300"
+            className="bg-background border border-border-subtle px-5 py-3.5 rounded-2xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300"
           >
             {projectTypes.map((type) => (
               <option key={type} value={type}>
@@ -274,7 +274,7 @@ export const ContactForm: React.FC = () => {
 
         {/* Budget Range */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="budget" className="text-xs uppercase tracking-widest text-text-secondary">
+          <label htmlFor="budget" className="font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-text-secondary">
             Budget Range
           </label>
           <select
@@ -283,7 +283,7 @@ export const ContactForm: React.FC = () => {
             value={form.budget}
             onChange={handleChange}
             disabled={status === "submitting"}
-            className="bg-background border border-border-subtle px-4 py-3 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-accent transition-all duration-300"
+            className="bg-background border border-border-subtle px-5 py-3.5 rounded-2xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300"
           >
             {budgets.map((b) => (
               <option key={b} value={b}>
@@ -296,7 +296,7 @@ export const ContactForm: React.FC = () => {
 
       {/* Message Input */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="message" className="text-xs uppercase tracking-widest text-text-secondary">
+        <label htmlFor="message" className="font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-text-secondary">
           Tell us about your project <span className="text-accent">*</span>
         </label>
         <textarea
@@ -307,7 +307,7 @@ export const ContactForm: React.FC = () => {
           onChange={handleChange}
           disabled={status === "submitting"}
           placeholder="Please describe your requirements, timeline, or objectives..."
-          className={`bg-background border px-4 py-3 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-accent transition-all duration-300 resize-none ${
+          className={`bg-background border px-5 py-3.5 rounded-2xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 resize-none ${
             errors.message ? "border-red-500/50" : "border-border-subtle"
           }`}
         />
@@ -318,7 +318,7 @@ export const ContactForm: React.FC = () => {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full flex items-center justify-center gap-2 mt-4 px-7 py-3.5 bg-text-primary text-background font-sans text-sm font-semibold uppercase tracking-wider rounded-xl hover:bg-accent hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className="w-full flex items-center justify-center gap-2 mt-4 px-8 py-4 bg-[var(--btn-bg)] text-[var(--btn-fg)] border border-[var(--btn-bg)] font-mono text-xs font-bold uppercase tracking-[0.06em] rounded-full hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-fg)] hover:border-[var(--accent-edge)] transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         {status === "submitting" ? (
           <>

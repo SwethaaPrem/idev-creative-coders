@@ -1,5 +1,6 @@
 import React from "react";
 import { ScrollReveal } from "../components/ScrollReveal";
+import { Section, SectionHeader } from "../components/Section";
 
 export const ProcessTimeline: React.FC = () => {
   const steps = [
@@ -36,61 +37,38 @@ export const ProcessTimeline: React.FC = () => {
   ];
 
   return (
-    <section id="process" className="py-24 bg-background border-b border-border-subtle select-none">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        
-        {/* Section Heading */}
-        <div className="max-w-2xl mb-16 text-left">
-          <ScrollReveal direction="down">
-            <span className="text-[10px] font-mono tracking-[0.25em] text-text-secondary uppercase block mb-4">
-              03 // HOW WE BUILD
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-bold mb-4 tracking-tight text-reveal-gradient">
-              Our Process.
-            </h2>
-            <p className="text-text-secondary text-sm sm:text-base leading-relaxed">
-              We translate abstract concepts into production-grade systems using a clear, highly collaborative methodology.
-            </p>
-          </ScrollReveal>
-        </div>
+    <Section id="process" className="select-none">
+      <SectionHeader
+        eyebrow="03 // HOW WE BUILD"
+        lines={["Our Process."]}
+        description="We translate abstract concepts into production-grade systems using a clear, highly collaborative methodology."
+      />
 
-        {/* Timeline Grid: Desktop (Horizontal), Mobile (Vertical) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 relative">
-          
-          {/* Connector Line for Desktop */}
-          <div className="hidden lg:block absolute top-[18px] left-[5%] right-[5%] h-[1px] bg-border-subtle z-0" />
-
-          {steps.map((step, idx) => (
-            <ScrollReveal
-              key={step.num}
-              direction="up"
-              delay={0.1 * idx}
-              className="flex flex-col gap-4 relative z-10 bg-background/50 backdrop-blur-sm lg:bg-transparent text-left"
-            >
-              {/* Step Circle & Connector */}
-              <div className="flex items-center gap-4 lg:flex-col lg:items-start lg:gap-4">
-                <div className="w-10 h-10 rounded-full bg-surface border border-border-subtle hover:border-accent hover:text-white flex items-center justify-center font-mono text-xs text-text-secondary transition-all duration-300">
-                  {step.num}
-                </div>
-                
-                {/* Mobile vertical line connector */}
-                {idx < steps.length - 1 && (
-                  <div className="lg:hidden absolute left-[19px] top-10 bottom-[-24px] w-[1px] bg-border-subtle" />
-                )}
-
-                <h3 className="text-lg font-bold text-text-primary lg:mt-2 tracking-tight">
+      {/* Staggered tiles: the middle column sits lower for an off-grid rhythm */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 lg:pb-14">
+        {steps.map((step, idx) => (
+          <ScrollReveal
+            key={step.num}
+            direction="up"
+            delay={0.08 * (idx % 3)}
+            className={idx % 3 === 1 ? "lg:translate-y-14" : ""}
+          >
+            <div className="group flex min-h-[320px] flex-col justify-between rounded-[2rem] border border-[var(--line-strong)] p-8 text-left transition-colors duration-500 hover:border-[var(--accent-edge)] hover:bg-accent-fill hover:text-on-accent sm:rounded-[2.5rem] sm:p-10">
+              <span className="ghost-numeral text-[clamp(5rem,9vw,8rem)] transition-all duration-500 group-hover:[-webkit-text-stroke-color:var(--on-accent)]">
+                {step.num}
+              </span>
+              <div className="flex flex-col gap-4">
+                <h3 className="font-display text-3xl font-extrabold uppercase tracking-[-0.015em] text-text-primary transition-colors duration-500 [font-stretch:88%] group-hover:text-on-accent">
                   {step.title}
                 </h3>
+                <p className="max-w-xs text-sm leading-relaxed text-text-secondary transition-colors duration-500 group-hover:text-on-accent">
+                  {step.desc}
+                </p>
               </div>
-
-              {/* Step Desc */}
-              <p className="text-text-secondary text-xs leading-relaxed pl-14 lg:pl-0 lg:max-w-xs">
-                {step.desc}
-              </p>
-            </ScrollReveal>
-          ))}
-        </div>
+            </div>
+          </ScrollReveal>
+        ))}
       </div>
-    </section>
+    </Section>
   );
 };

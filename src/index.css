@@ -1,32 +1,84 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------ */
+/* Design tokens                                                      */
+/* Base palette: INK #0B0B0D + WARM WHITE #F4F1EA. Dark is the        */
+/* default; `html.light` swaps the neutrals. Accents are used sparingly */
+/* (roughly 80% neutral / 15% dominant accent / 5% secondary) and each */
+/* project then brings its own colour environment (see .env-*).        */
+/* ------------------------------------------------------------------ */
 :root {
-  --background: #0c0a0a;
-  --surface: #171314;
-  --surface-secondary: #211c1d;
-  --text-primary: #fcfafa;
-  --text-secondary: #d2c7c9;
-  --accent: #e52e58;
-  --accent-secondary: #ffa6c9;
-  --border-subtle: #2a2224;
-  --grid-line: rgba(255, 255, 255, 0.15);
-  --glow-color: rgba(229, 46, 88, 0.06);
-  --text-gradient-start: #ffffff;
-  --text-gradient-end: #d2c7c9;
+  --background: #0b0b0d;
+  --surface: #131316;
+  --surface-secondary: #1b1b20;
+  --text-primary: #f4f1ea;
+  --text-secondary: #a8a49b;
+  --border-subtle: rgba(244, 241, 234, 0.12);
+  --line-strong: rgba(244, 241, 234, 0.3);
+  --grid-line: rgba(244, 241, 234, 0.06);
+  --ghost: rgba(244, 241, 234, 0.3);
+
+  /* Accent that is safe to use as text/line colour on --background */
+  --accent: #d8ff3e;
+  /* Accent that is used as a fill (always carries --on-accent text) */
+  --accent-fill: #d8ff3e;
+  --on-accent: #0b0b0d;
+  --accent-edge: transparent;
+  --accent-secondary: #ff5ccf;
+
+  /* Primary buttons: lime on ink, ink on warm white (see html.light) */
+  --btn-bg: #d8ff3e;
+  --btn-fg: #0b0b0d;
+  --btn-hover-bg: #f4f1ea;
+  --btn-hover-fg: #0b0b0d;
+
+  /* Floating information panels: translucent neutral, subtle border */
+  --panel: rgba(19, 19, 22, 0.93);
+  --panel-border: rgba(244, 241, 234, 0.12);
+  --nav-bg: rgba(11, 11, 13, 0.82);
+  --shadow-float: 0 50px 90px -50px rgba(0, 0, 0, 0.85);
+  --shadow-soft: 0 24px 60px -40px rgba(0, 0, 0, 0.7);
+
+  /* Hero node-system block (colour-blocked) */
+  --hero-block: #d8ff3e;
+  --node-base: #0b0b0d;
+  --node-hover: #7c3aed;
+  --node-label: #0b0b0d;
 }
+
 html.light {
-  --background: #faf7f2;
-  --surface: #ffffff;
-  --surface-secondary: #f4efe6;
-  --text-primary: #231215;
-  --text-secondary: #4e4043;
-  --accent: #4a1521;
-  --accent-secondary: #8b1e3f;
-  --border-subtle: #e8dfc9;
-  --grid-line: rgba(74, 21, 33, 0.14);
-  --glow-color: rgba(74, 21, 33, 0.02);
-  --text-gradient-start: #4a1521;
-  --text-gradient-end: #8b1e3f;
+  --background: #f4f1ea;
+  --surface: #fbf9f4;
+  --surface-secondary: #e8e3d6;
+  --text-primary: #0b0b0d;
+  --text-secondary: #5c5850;
+  --border-subtle: rgba(11, 11, 13, 0.14);
+  --line-strong: rgba(11, 11, 13, 0.34);
+  --grid-line: rgba(11, 11, 13, 0.06);
+  --ghost: rgba(11, 11, 13, 0.36);
+
+  /* Lime has no contrast on warm white, so the text accent becomes violet */
+  --accent: #7c3aed;
+  --accent-fill: #d8ff3e;
+  --on-accent: #0b0b0d;
+  --accent-edge: #0b0b0d;
+  --accent-secondary: #ff5ccf;
+
+  --btn-bg: #0b0b0d;
+  --btn-fg: #f4f1ea;
+  --btn-hover-bg: #d8ff3e;
+  --btn-hover-fg: #0b0b0d;
+
+  --panel: rgba(251, 249, 244, 0.93);
+  --panel-border: rgba(11, 11, 13, 0.12);
+  --nav-bg: rgba(244, 241, 234, 0.84);
+  --shadow-float: 0 50px 90px -50px rgba(11, 11, 13, 0.35);
+  --shadow-soft: 0 24px 60px -40px rgba(11, 11, 13, 0.25);
+
+  --hero-block: #0b0b0d;
+  --node-base: #d8ff3e;
+  --node-hover: #ff5ccf;
+  --node-label: #f4f1ea;
 }
 
 @theme {
@@ -36,18 +88,51 @@ html.light {
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-accent: var(--accent);
+  --color-accent-fill: var(--accent-fill);
+  --color-on-accent: var(--on-accent);
   --color-accent-secondary: var(--accent-secondary);
   --color-border-subtle: var(--border-subtle);
   --color-grid-line: var(--grid-line);
-  
-  --font-sans: "Plus Jakarta Sans", "Inter", sans-serif;
-  --font-display: "Space Grotesk", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+
+  /* Fixed brand palette (does not change with the theme) */
+  --color-brand-ink: #0b0b0d;
+  --color-brand-warm: #f4f1ea;
+  --color-brand-violet: #7c3aed;
+  --color-brand-pink: #ff5ccf;
+  --color-brand-lime: #d8ff3e;
+  --color-brand-cyan: #55d6ff;
+
+  --font-sans: "DM Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Bricolage Grotesque", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-fade-in: fade-in 0.6s var(--ease-premium) both;
+  --animate-spin-slow: spin-slow 22s linear infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes spin-slow {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
     background-color: var(--color-background);
     color: var(--color-text-primary);
     font-family: var(--font-sans);
@@ -55,7 +140,7 @@ html.light {
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
-  
+
   body {
     background-color: var(--color-background);
     color: var(--color-text-primary);
@@ -67,83 +152,204 @@ html.light {
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     font-weight: 700;
+    letter-spacing: -0.03em;
   }
 
-  html.light h1,
-  html.light h2,
-  html.light h3,
-  html.light h4,
-  html.light h5,
-  html.light h6 {
-    color: var(--accent);
-  }
-
-  /* Custom subtle scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
-  
   ::-webkit-scrollbar-track {
     background: var(--background);
   }
-  
   ::-webkit-scrollbar-thumb {
     background: var(--border-subtle);
     border-radius: 4px;
   }
-  
   ::-webkit-scrollbar-thumb:hover {
     background: var(--text-secondary);
   }
-  
-  /* Selection styling */
+
   ::selection {
-    background-color: rgba(229, 46, 88, 0.25);
-    color: #ffffff;
-  }
-  
-  html.light ::selection {
-    background-color: rgba(74, 21, 33, 0.15);
-    color: inherit;
+    background-color: #d8ff3e;
+    color: #0b0b0d;
   }
 }
 
-/* Custom interactive animation classes */
-.glow-blur {
-  background: radial-gradient(circle, var(--glow-color) 0%, rgba(0, 0, 0, 0) 70%);
-  filter: blur(40px);
-  pointer-events: none;
+/* ------------------------------------------------------------------ */
+/* Project colour environments                                        */
+/* Every project is its own little universe. The poster, its labels    */
+/* and the buttons that belong to it all read from these variables.    */
+/*   bg/fg        poster background and the text on it                 */
+/*   win/win-*    the product "window" floating on the poster          */
+/*   acc/acc-ink  accent used inside the poster, and text on it        */
+/*   acc2         tiny secondary accent                                */
+/*   sig/sig-ink  signature colour for buttons + chips on neutral UI   */
+/*   label        signature colour as TEXT on the page background      */
+/* ------------------------------------------------------------------ */
+:root {
+  --p-bg: var(--surface-secondary);
+  --p-fg: var(--text-primary);
+  --p-win: var(--surface);
+  --p-win-fg: var(--text-primary);
+  --p-win-muted: var(--text-secondary);
+  --p-win-label: var(--accent);
+  --p-acc: var(--accent-fill);
+  --p-acc-ink: var(--on-accent);
+  --p-acc2: var(--accent-secondary);
+  --p-sig: var(--accent-fill);
+  --p-sig-ink: var(--on-accent);
+  --p-label: var(--accent);
 }
 
-.text-reveal-gradient {
-  background: linear-gradient(135deg, var(--text-gradient-start) 30%, var(--text-gradient-end) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.env-ink-lime {
+  --p-bg: #0b0b0d; --p-fg: #f4f1ea;
+  --p-win: #17171b; --p-win-fg: #f4f1ea; --p-win-muted: rgba(244, 241, 234, 0.58); --p-win-label: #d8ff3e;
+  --p-acc: #d8ff3e; --p-acc-ink: #0b0b0d; --p-acc2: #ff5ccf;
+  --p-sig: #d8ff3e; --p-sig-ink: #0b0b0d; --p-label: #d8ff3e;
+}
+.env-grape-pink {
+  --p-bg: #1b0a3c; --p-fg: #f4f1ea;
+  --p-win: #2b1466; --p-win-fg: #f4f1ea; --p-win-muted: rgba(244, 241, 234, 0.62); --p-win-label: #ff5ccf;
+  --p-acc: #ff5ccf; --p-acc-ink: #0b0b0d; --p-acc2: #7c3aed;
+  --p-sig: #ff5ccf; --p-sig-ink: #0b0b0d; --p-label: #ff5ccf;
+}
+.env-paper-cyan {
+  --p-bg: #f4f1ea; --p-fg: #0b0b0d;
+  --p-win: #ffffff; --p-win-fg: #0b0b0d; --p-win-muted: rgba(11, 11, 13, 0.6); --p-win-label: #0a6e94;
+  --p-acc: #55d6ff; --p-acc-ink: #0b0b0d; --p-acc2: #d8ff3e;
+  --p-sig: #55d6ff; --p-sig-ink: #0b0b0d; --p-label: #55d6ff;
+}
+.env-pink-ink {
+  --p-bg: #ff5ccf; --p-fg: #0b0b0d;
+  --p-win: #0b0b0d; --p-win-fg: #f4f1ea; --p-win-muted: rgba(244, 241, 234, 0.62); --p-win-label: #d8ff3e;
+  --p-acc: #d8ff3e; --p-acc-ink: #0b0b0d; --p-acc2: #f4f1ea;
+  --p-sig: #ff5ccf; --p-sig-ink: #0b0b0d; --p-label: #ff5ccf;
+}
+.env-violet-lime {
+  --p-bg: #7c3aed; --p-fg: #f4f1ea;
+  --p-win: #0b0b0d; --p-win-fg: #f4f1ea; --p-win-muted: rgba(244, 241, 234, 0.62); --p-win-label: #d8ff3e;
+  --p-acc: #d8ff3e; --p-acc-ink: #0b0b0d; --p-acc2: #ff5ccf;
+  --p-sig: #7c3aed; --p-sig-ink: #f4f1ea; --p-label: #b79cff;
+}
+.env-ink-cyan {
+  --p-bg: #0b0b0d; --p-fg: #f4f1ea;
+  --p-win: #15151a; --p-win-fg: #f4f1ea; --p-win-muted: rgba(244, 241, 234, 0.58); --p-win-label: #55d6ff;
+  --p-acc: #55d6ff; --p-acc-ink: #0b0b0d; --p-acc2: #d8ff3e;
+  --p-sig: #55d6ff; --p-sig-ink: #0b0b0d; --p-label: #55d6ff;
+}
+.env-lime-ink {
+  --p-bg: #d8ff3e; --p-fg: #0b0b0d;
+  --p-win: #f4f1ea; --p-win-fg: #0b0b0d; --p-win-muted: rgba(11, 11, 13, 0.6); --p-win-label: #0b0b0d;
+  --p-acc: #0b0b0d; --p-acc-ink: #d8ff3e; --p-acc2: #7c3aed;
+  --p-sig: #d8ff3e; --p-sig-ink: #0b0b0d; --p-label: #d8ff3e;
 }
 
-.accent-gradient {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+/* On a warm-white page the bright signature colours need a darker text form */
+html.light .env-ink-lime,
+html.light .env-lime-ink { --p-label: #536600; }
+html.light .env-grape-pink,
+html.light .env-pink-ink { --p-label: #b0128a; }
+html.light .env-paper-cyan,
+html.light .env-ink-cyan { --p-label: #0a6e94; }
+html.light .env-violet-lime { --p-label: #7c3aed; }
+
+/* A warm-white poster would vanish into a warm-white page, so it gets a slightly deeper paper tone */
+html.light .env-paper-cyan { --p-bg: #e5e0d1; }
+
+/* ------------------------------------------------------------------ */
+/* Reusable surfaces and type helpers                                 */
+/* ------------------------------------------------------------------ */
+@layer components {
+  /* Translucent neutral panel that floats over imagery (controlled blur) */
+  .glass {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-float);
+  }
+
+  /* Opaque raised panel */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+  }
+
+  /* Faint technical grid */
+  .stage-grid {
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 4.5rem 4.5rem;
+  }
+
+  /* Outlined oversized numerals */
+  .ghost-numeral {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-stretch: 85%;
+    line-height: 0.8;
+    letter-spacing: -0.03em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--ghost);
+  }
+
+  /*
+   * Outlined display text. Variable fonts have overlapping contours, which a
+   * plain stroke would draw through the letters; painting the stroke first and
+   * then a background-coloured fill hides those inner lines.
+   */
+  .outline-text {
+    -webkit-text-fill-color: var(--outline-fill, var(--background));
+    -webkit-text-stroke: 3px currentColor;
+    paint-order: stroke fill;
+    letter-spacing: 0.012em;
+  }
+
+  /* Giant ghost wordmark (same technique, in the quiet ghost colour) */
+  .ghost-wordmark {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-stretch: 85%;
+    letter-spacing: -0.005em;
+    -webkit-text-fill-color: var(--background);
+    -webkit-text-stroke: 3px var(--ghost);
+    paint-order: stroke fill;
+  }
+
+  /* Space Mono micro-label used for metadata */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  /* Heavy condensed editorial type */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-stretch: 88%;
+    letter-spacing: -0.018em;
+    line-height: 0.92;
+  }
+
+  /* Small 4-point star used as a separator / bullet */
+  .star {
+    display: inline-block;
+    background: currentColor;
+    clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  }
 }
 
-.accent-text-gradient {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Infinite marquee utilities */
+/* Marquee */
 .marquee-container {
   display: flex;
   overflow: hidden;
   user-select: none;
-}
-
-.marquee-content {
-  display: flex;
-  flex-shrink: 0;
-  gap: 2rem;
-  min-width: 100%;
 }
 
 @keyframes marquee-scroll {
@@ -158,43 +364,41 @@ html.light {
 .animate-marquee-scroll {
   display: flex;
   width: max-content;
-  animation: marquee-scroll 25s linear infinite;
+  animation: marquee-scroll 45s linear infinite;
 }
 
 .animate-marquee-scroll:hover {
   animation-play-state: paused;
 }
 
+/* Raised cards with a restrained hover lift */
+.card-premium {
+  background-color: var(--surface);
+  border: 1px solid var(--border-subtle);
+  transition:
+    transform 0.8s var(--ease-premium),
+    border-color 0.5s var(--ease-premium),
+    background-color 0.5s var(--ease-premium);
+}
+
+.card-premium:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-4px);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
   .animate-marquee-scroll {
     animation: none !important;
     flex-wrap: wrap;
     justify-content: center;
   }
-  
-  html {
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Premium elevated cards with soft tech shadows */
-.card-premium {
-  background-color: var(--surface);
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.01), 0 15px 30px -15px rgba(0, 0, 0, 0.02);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-html.light .card-premium {
-  box-shadow: 0 10px 30px -10px rgba(74, 21, 33, 0.05), 0 1px 3px rgba(74, 21, 33, 0.02);
-}
-
-.card-premium:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 20px 40px -20px rgba(229, 46, 88, 0.15);
-}
-
-html.light .card-premium:hover {
-  box-shadow: 0 30px 60px -15px rgba(74, 21, 33, 0.08), 0 2px 8px rgba(74, 21, 33, 0.03);
 }

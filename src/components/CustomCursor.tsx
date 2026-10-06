@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
+/**
+ * Desktop-only cursor. A small inverted dot normally; over anything marked
+ * `data-cursor="view"` (project posters) it grows into a labelled disc.
+ */
 export const CustomCursor: React.FC = () => {
   const [cursorType, setCursorType] = useState<"default" | "view" | "open">("default");
   const [isVisible, setIsVisible] = useState(false);
@@ -16,9 +21,9 @@ export const CustomCursor: React.FC = () => {
   useEffect(() => {
     // Detect mobile/touch devices
     const checkDevice = () => {
-      const mobile = 
-        window.matchMedia("(max-width: 768px)").matches || 
-        navigator.maxTouchPoints > 0 || 
+      const mobile =
+        window.matchMedia("(max-width: 768px)").matches ||
+        navigator.maxTouchPoints > 0 ||
         window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       setIsMobile(mobile);
     };
@@ -83,17 +88,18 @@ export const CustomCursor: React.FC = () => {
         translateX: "-50%",
         translateY: "-50%",
       }}
-      className={`fixed top-0 left-0 pointer-events-none z-50 rounded-full flex items-center justify-center font-sans font-semibold text-[10px] tracking-widest uppercase transition-all duration-300 ${
+      className={`pointer-events-none fixed left-0 top-0 z-50 flex items-center justify-center rounded-full font-mono text-[10px] font-bold uppercase tracking-[0.06em] transition-[width,height,background-color] duration-300 ${
         isInteractive
-          ? "w-16 h-16 bg-white text-background scale-100 mix-blend-normal"
-          : "w-3 h-3 bg-accent scale-100 mix-blend-difference"
+          ? "h-[88px] w-[88px] border border-brand-ink bg-brand-warm text-brand-ink"
+          : "h-3 w-3 bg-white mix-blend-difference"
       }`}
-      animate={{
-        scale: isInteractive ? 1 : 1,
-      }}
     >
-      {cursorType === "view" && <span className="text-background select-none">VIEW</span>}
-      {cursorType === "open" && <span className="text-background select-none">OPEN</span>}
+      {isInteractive && (
+        <span className="flex select-none flex-col items-center gap-1 leading-none">
+          {cursorType === "open" ? "OPEN" : "VIEW"}
+          <ArrowUpRight className="h-4 w-4" strokeWidth={2.4} />
+        </span>
+      )}
     </motion.div>
   );
 };

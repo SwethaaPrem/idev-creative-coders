@@ -1,161 +1,330 @@
 import React from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { projects } from "../data/projects";
+import type { Project } from "../data/projects";
+import { envClass } from "../lib/projectEnv";
 
 interface ProjectPreviewProps {
   id: string;
+  /** Extra classes for the layer that positions the product window, e.g. bottom padding to clear an overlapping panel. */
+  className?: string;
+  /** Where the product window sits on the poster. */
+  anchor?: "left" | "center" | "right";
+  valign?: "center" | "end";
+  /** Show the outlined project number behind the window. */
+  ghost?: boolean;
 }
 
-export const ProjectPreview: React.FC<ProjectPreviewProps> = ({ id }) => {
+/* ------------------------------------------------------------------ */
+/* Product window (the existing mock UI, set large inside the poster)  */
+/* ------------------------------------------------------------------ */
+
+const lineColor = "color-mix(in srgb, var(--p-win-fg) 14%, transparent)";
+const barColor = "color-mix(in srgb, var(--p-win-fg) 16%, transparent)";
+const labelFill = "color-mix(in srgb, var(--p-win-label) 22%, transparent)";
+
+const ProductWindow: React.FC<{ children: ReactNode }> = ({ children }) => (
+  <div className="relative w-[min(100%,38rem)]">
+    {/* Offset pane behind the window, for a layered-interface feel */}
+    <div
+      className="pointer-events-none absolute inset-0 translate-x-[4%] translate-y-[7%] rounded-[1.5rem] border"
+      style={{
+        borderColor: "color-mix(in srgb, var(--p-fg) 24%, transparent)",
+        background: "color-mix(in srgb, var(--p-win) 35%, transparent)",
+      }}
+    />
+    <div className="relative flex min-h-[15rem] flex-col justify-between gap-4 rounded-[1.5rem] bg-[var(--p-win)] p-5 text-[var(--p-win-fg)] shadow-[0_44px_70px_-36px_rgba(0,0,0,0.55)] sm:min-h-[19rem] sm:p-7">
+      {children}
+    </div>
+  </div>
+);
+
+const MockHeader: React.FC<{ label: string; badge: string }> = ({ label, badge }) => (
+  <div className="flex items-start justify-between gap-3">
+    <span className="font-mono text-[10px] font-bold uppercase tracking-[0.04em] text-[var(--p-win-label)] sm:text-[11px]">
+      {label}
+    </span>
+    <span
+      className="whitespace-nowrap rounded-full px-2.5 py-1 font-mono text-[10px] font-bold text-[var(--p-win-label)]"
+      style={{ background: labelFill }}
+    >
+      {badge}
+    </span>
+  </div>
+);
+
+const MockFooter: React.FC<{ left: string; right: string }> = ({ left, right }) => (
+  <div
+    className="flex justify-between gap-3 border-t pt-3 font-mono text-[10px] text-[var(--p-win-muted)] sm:text-[11px]"
+    style={{ borderColor: lineColor }}
+  >
+    <span>{left}</span>
+    <span>{right}</span>
+  </div>
+);
+
+const metricValue = (project: Project | undefined, label: string): string =>
+  project?.metrics?.find((m) => m.label === label)?.value ?? "";
+
+const WindowContent: React.FC<{ id: string; project?: Project }> = ({ id, project }) => {
   switch (id) {
     case "smart-traffic":
       return (
-        <div className="absolute inset-0 bg-gradient-to-tr from-emerald-950/20 to-slate-900/40 [html.light_&]:from-emerald-100/40 [html.light_&]:to-slate-200/40 flex items-center justify-center p-8 overflow-hidden select-none">
-          {/* Abstract Traffic Grid overlay */}
-          <div className="absolute inset-0 opacity-15 [html.light_&]:opacity-30 bg-[radial-gradient(#10b981_1.5px,transparent_1.5px)] [html.light_&]:bg-[radial-gradient(#047857_1.5px,transparent_1.5px)] bg-[size:16px_16px]" />
-          <div className="relative w-full h-full flex flex-col justify-between border border-emerald-500/20 [html.light_&]:border-emerald-300 rounded-xl p-6 bg-surface-secondary/40 [html.light_&]:bg-white/80 backdrop-blur-sm">
-            <div className="flex justify-between items-start">
-              <span className="text-[10px] font-mono tracking-widest text-emerald-400 [html.light_&]:text-emerald-800 font-bold">DETECTING: VEHICLE</span>
-              <span className="text-[10px] font-mono text-emerald-500 bg-emerald-500/10 [html.light_&]:text-emerald-800 [html.light_&]:bg-emerald-100 px-2 py-0.5 rounded font-bold">LIVE FEEDS</span>
-            </div>
-            {/* SVG traffic simulation mockup */}
-            <svg viewBox="0 0 200 80" className="w-full h-1/2 opacity-80 [html.light_&]:opacity-100 my-2">
-              <line x1="10" y1="40" x2="190" y2="40" className="stroke-slate-700 [html.light_&]:stroke-slate-400" strokeWidth="2.5" strokeDasharray="4 4" />
-              <rect x="30" y="30" width="20" height="12" rx="2" fill="#10b981" fillOpacity="0.4" className="stroke-emerald-500 [html.light_&]:fill-emerald-100 [html.light_&]:stroke-emerald-600 [html.light_&]:fill-opacity-90" strokeWidth="1.5" />
-              <rect x="90" y="38" width="25" height="12" rx="2" fill="#3b82f6" fillOpacity="0.3" className="stroke-blue-500 [html.light_&]:fill-blue-100 [html.light_&]:stroke-blue-600 [html.light_&]:fill-opacity-90" strokeWidth="1.5" />
-              <circle cx="160" cy="40" r="4.5" fill="#ef4444" className="animate-pulse [html.light_&]:fill-red-650" />
-            </svg>
-            <div className="flex justify-between text-[10px] font-mono text-text-secondary [html.light_&]:text-emerald-900 border-t border-border-subtle pt-3">
-              <span>FPS: 60</span>
-              <span>FLOW RATE: 24/MIN</span>
-            </div>
-          </div>
-        </div>
+        <>
+          <MockHeader label="DETECTING: VEHICLE" badge="LIVE FEEDS" />
+          {/* SVG traffic simulation mockup */}
+          <svg viewBox="0 0 200 80" className="my-1 h-auto w-full">
+            <line x1="10" y1="40" x2="190" y2="40" strokeWidth="2.5" strokeDasharray="4 4" style={{ stroke: "var(--p-win-muted)" }} />
+            <rect x="24" y="22" width="34" height="28" rx="3" strokeWidth="1" strokeDasharray="3 2" fill="none" style={{ stroke: "var(--p-win-label)" }} />
+            <rect x="30" y="30" width="20" height="12" rx="3" strokeWidth="1.5" style={{ stroke: "var(--p-win-label)", fill: labelFill }} />
+            <rect x="90" y="38" width="25" height="12" rx="3" strokeWidth="1.5" style={{ stroke: "var(--p-win-muted)", fill: barColor }} />
+            <circle cx="160" cy="40" r="4.5" fill="#ff3b3b" className="animate-pulse" />
+          </svg>
+          <MockFooter left="FPS: 60" right="FLOW RATE: 24/MIN" />
+        </>
       );
     case "receipt-processing":
       return (
-        <div className="absolute inset-0 bg-gradient-to-tr from-violet-950/20 to-neutral-900/40 [html.light_&]:from-violet-100/40 [html.light_&]:to-neutral-200/40 flex items-center justify-center p-8 overflow-hidden select-none">
-          <div className="absolute inset-0 opacity-10 [html.light_&]:opacity-25 bg-[linear-gradient(to_right,#8b5cf6_1.5px,transparent_1.5px)] [html.light_&]:bg-[linear-gradient(to_right,#6d28d9_1.5px,transparent_1.5px)] bg-[size:32px_32px]" />
-          <div className="relative w-full h-full flex flex-col justify-between border border-violet-500/20 [html.light_&]:border-violet-300 rounded-xl p-6 bg-surface-secondary/40 [html.light_&]:bg-white/80 backdrop-blur-sm">
-            <div className="flex justify-between items-start">
-              <span className="text-[10px] font-mono tracking-widest text-violet-400 [html.light_&]:text-violet-850 font-bold">AWS TEXTRACT PIPELINE</span>
-              <span className="text-[10px] font-mono text-violet-500 bg-violet-500/10 [html.light_&]:text-violet-800 [html.light_&]:bg-violet-100 px-2 py-0.5 rounded font-bold">COMPLETED</span>
-            </div>
-            {/* Receipt schema abstract mock */}
-            <div className="flex flex-col gap-2.5 my-2 w-full opacity-70 [html.light_&]:opacity-100">
-              <div className="h-2.5 bg-violet-500/20 [html.light_&]:bg-violet-600/30 rounded w-1/3" />
-              <div className="h-2 bg-text-secondary/20 [html.light_&]:bg-slate-300 rounded w-full" />
-              <div className="h-2 bg-text-secondary/20 [html.light_&]:bg-slate-300 rounded w-5/6" />
-              <div className="h-2 bg-text-secondary/20 [html.light_&]:bg-slate-300 rounded w-4/5" />
-              <div className="h-3.5 bg-violet-500/25 [html.light_&]:bg-violet-600/40 rounded w-1/4 self-end mt-2" />
-            </div>
-            <div className="flex justify-between text-[10px] font-mono text-text-secondary [html.light_&]:text-violet-900 border-t border-border-subtle pt-3">
-              <span>MATCHING: 99.1%</span>
-              <span>STATUS: JSON_OK</span>
-            </div>
+        <>
+          <MockHeader label="AWS TEXTRACT PIPELINE" badge="COMPLETED" />
+          {/* Receipt schema abstract mock */}
+          <div className="my-1 flex w-full flex-col gap-3">
+            <div className="h-3 w-1/3 rounded-full" style={{ background: "var(--p-win-label)" }} />
+            <div className="h-2.5 w-full rounded-full" style={{ background: barColor }} />
+            <div className="h-2.5 w-5/6 rounded-full" style={{ background: barColor }} />
+            <div className="h-2.5 w-4/5 rounded-full" style={{ background: barColor }} />
+            <div className="mt-2 h-4 w-1/4 self-end rounded-full" style={{ background: "var(--p-win-label)" }} />
           </div>
-        </div>
+          <MockFooter left="MATCHING: 99.1%" right="STATUS: JSON_OK" />
+        </>
       );
     case "internal-developer-platform":
       return (
-        <div className="absolute inset-0 bg-gradient-to-tr from-blue-950/20 to-slate-900/40 [html.light_&]:from-blue-100/40 [html.light_&]:to-slate-200/40 flex items-center justify-center p-8 overflow-hidden select-none">
-          <div className="relative w-full h-full flex flex-col justify-between border border-blue-500/20 [html.light_&]:border-blue-300 rounded-xl p-6 bg-surface-secondary/40 [html.light_&]:bg-white/80 backdrop-blur-sm font-mono text-[9px] text-blue-400 [html.light_&]:text-slate-800">
-            <div className="flex justify-between items-center border-b border-border-subtle pb-2">
-              <div className="flex gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500/50 [html.light_&]:bg-red-500" />
-                <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/50 [html.light_&]:bg-yellow-500" />
-                <span className="w-2.5 h-2.5 rounded-full bg-green-500/50 [html.light_&]:bg-green-500" />
-              </div>
-              <span className="text-text-secondary [html.light_&]:text-blue-800 font-bold">dev-portal-v2</span>
+        <>
+          <div className="flex items-center justify-between border-b pb-3" style={{ borderColor: lineColor }}>
+            <div className="flex gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full" style={{ background: barColor }} />
+              <span className="h-2.5 w-2.5 rounded-full" style={{ background: barColor }} />
+              <span className="h-2.5 w-2.5 rounded-full" style={{ background: barColor }} />
             </div>
-            <div className="flex flex-col gap-2 my-2 text-left">
-              <span>$ npm run deploy --prod</span>
-              <span className="text-emerald-400 [html.light_&]:text-emerald-700 font-bold">&gt; Building container layers... [Done]</span>
-              <span className="text-text-secondary [html.light_&]:text-slate-500">&gt; Injecting variables... [Ok]</span>
-              <span className="text-blue-500 [html.light_&]:text-indigo-600 font-bold">&gt; Routing active SSL...</span>
-            </div>
-            <div className="flex justify-between text-text-secondary [html.light_&]:text-blue-900 border-t border-border-subtle pt-2">
-              <span>DOCKER STATUS: UP</span>
-              <span>CPU: 4.8%</span>
-            </div>
+            <span className="font-mono text-[11px] font-bold text-[var(--p-win-label)]">dev-portal-v2</span>
           </div>
-        </div>
+          <div className="my-1 flex flex-col gap-2 text-left font-mono text-[11px] sm:text-xs">
+            <span>$ npm run deploy --prod</span>
+            <span className="font-bold text-[var(--p-win-label)]">&gt; Building container layers... [Done]</span>
+            <span className="text-[var(--p-win-muted)]">&gt; Injecting variables... [Ok]</span>
+            <span className="font-bold text-[var(--p-win-label)]">&gt; Routing active SSL...</span>
+          </div>
+          <MockFooter left="DOCKER STATUS: UP" right="CPU: 4.8%" />
+        </>
       );
     case "iot-monitoring":
       return (
-        <div className="absolute inset-0 bg-gradient-to-tr from-cyan-950/20 to-slate-900/40 [html.light_&]:from-cyan-100/40 [html.light_&]:to-slate-200/40 flex items-center justify-center p-8 overflow-hidden select-none">
-          <div className="absolute inset-0 opacity-15 [html.light_&]:opacity-30 bg-[radial-gradient(#06b6d4_1.5px,transparent_1.5px)] [html.light_&]:bg-[radial-gradient(#0891b2_1.5px,transparent_1.5px)] bg-[size:20px_20px]" />
-          <div className="relative w-full h-full flex flex-col justify-between border border-cyan-500/20 [html.light_&]:border-cyan-300 rounded-xl p-6 bg-surface-secondary/40 [html.light_&]:bg-white/80 backdrop-blur-sm">
-            <div className="flex justify-between items-start">
-              <span className="text-[10px] font-mono tracking-widest text-cyan-400 [html.light_&]:text-cyan-850 font-bold">SENSOR: ESP32_GRID_04</span>
-              <span className="text-[10px] font-mono text-cyan-500 bg-cyan-500/10 [html.light_&]:text-cyan-800 [html.light_&]:bg-cyan-100 px-2 py-0.5 rounded font-bold">CONNECTED</span>
-            </div>
-            {/* Dynamic waveform mock */}
-            <svg viewBox="0 0 200 60" className="w-full h-1/2 opacity-80 [html.light_&]:opacity-100 my-2">
-              <path d="M 0,30 Q 15,10 30,30 T 60,30 T 90,30 T 120,45 T 150,15 T 180,30 T 200,30" fill="none" stroke="#06b6d4" className="[html.light_&]:stroke-cyan-700" strokeWidth="3" />
-            </svg>
-            <div className="flex justify-between text-[10px] font-mono text-text-secondary [html.light_&]:text-cyan-905 border-t border-border-subtle pt-3">
-              <span>TEMP: 42.5°C</span>
-              <span>VIB: NORMAL</span>
-            </div>
-          </div>
-        </div>
+        <>
+          <MockHeader label="SENSOR: ESP32_GRID_04" badge="CONNECTED" />
+          {/* Waveform mock */}
+          <svg viewBox="0 0 200 60" className="my-1 h-auto w-full">
+            <path
+              d="M 0,30 Q 15,10 30,30 T 60,30 T 90,30 T 120,45 T 150,15 T 180,30 T 200,30"
+              fill="none"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              style={{ stroke: "var(--p-win-label)" }}
+            />
+          </svg>
+          <MockFooter left="TEMP: 42.5°C" right="VIB: NORMAL" />
+        </>
       );
     case "ss-agencies":
       return (
-        <div className="absolute inset-0 bg-gradient-to-tr from-indigo-950/20 to-slate-900/40 [html.light_&]:from-indigo-100/40 [html.light_&]:to-slate-200/40 flex items-center justify-center p-8 overflow-hidden select-none">
-          <div className="absolute inset-0 opacity-10 [html.light_&]:opacity-25 bg-[radial-gradient(#6366f1_1.5px,transparent_1.5px)] [html.light_&]:bg-[radial-gradient(#4338ca_1.5px,transparent_1.5px)] bg-[size:24px_24px]" />
-          <div className="relative w-full h-full flex flex-col justify-between border border-indigo-500/20 [html.light_&]:border-indigo-300 rounded-xl p-6 bg-surface-secondary/40 [html.light_&]:bg-white/80 backdrop-blur-sm">
-            <div className="flex justify-between items-start">
-              <span className="text-[10px] font-mono tracking-widest text-indigo-400 [html.light_&]:text-indigo-850 font-bold">BILLING APPLICATION</span>
-              <span className="text-[10px] font-mono text-indigo-500 bg-indigo-500/10 [html.light_&]:text-indigo-800 [html.light_&]:bg-indigo-100 px-2 py-0.5 rounded font-bold">PRODUCTION LIVE</span>
+        <>
+          <MockHeader label="BILLING APPLICATION" badge="PRODUCTION LIVE" />
+          {/* Abstract payment card */}
+          <div
+            className="flex h-32 w-60 max-w-full flex-col justify-between self-center rounded-2xl border p-4 text-left sm:h-36 sm:w-72"
+            style={{ borderColor: lineColor, background: "color-mix(in srgb, var(--p-win-fg) 6%, transparent)" }}
+          >
+            <div className="flex items-start justify-between">
+              <div className="h-6 w-8 rounded" style={{ background: "var(--p-win-label)" }} />
+              <span className="font-mono text-[8px] font-bold text-[var(--p-win-label)]">SS PLATFORM</span>
             </div>
-            {/* Abstract Payment Card representation */}
-            <div className="w-56 h-28 border border-indigo-500/30 [html.light_&]:border-indigo-400/50 rounded-xl p-4 self-center bg-gradient-to-br from-indigo-900/20 to-slate-900/40 [html.light_&]:from-indigo-600 [html.light_&]:to-indigo-900 backdrop-blur flex flex-col justify-between text-left shadow-md">
-              <div className="flex justify-between items-start">
-                <div className="w-8 h-6 bg-indigo-500/20 [html.light_&]:bg-white/20 rounded" />
-                <span className="text-[8px] font-mono text-indigo-400 [html.light_&]:text-indigo-200 font-bold">SS PLATFORM</span>
-              </div>
-              <div className="text-sm font-mono tracking-[0.1em] text-white">•••• •••• •••• 8840</div>
-              <div className="flex justify-between text-[8px] font-mono text-text-secondary [html.light_&]:text-indigo-200/85">
-                <span>VAL: 12/28</span>
-                <span>PCI SECURE</span>
-              </div>
-            </div>
-            <div className="flex justify-between text-[10px] font-mono text-text-secondary [html.light_&]:text-indigo-900 border-t border-border-subtle pt-3">
-              <span>VOL: ₹12.4Cr</span>
-              <span>LATENCY: 120MS</span>
+            <div className="font-mono text-sm tracking-[0.1em]">•••• •••• •••• 8840</div>
+            <div className="flex justify-between font-mono text-[8px] text-[var(--p-win-muted)]">
+              <span>VAL: 12/28</span>
+              <span>PCI SECURE</span>
             </div>
           </div>
+          <MockFooter left="VOL: ₹12.4Cr" right="LATENCY: 120MS" />
+        </>
+      );
+    case "fintech-startup": {
+      // Built only from this project's own data (category + metrics)
+      const lastCategory = project?.category.split("/").pop()?.trim().toUpperCase() ?? "";
+      return (
+        <>
+          <MockHeader label={lastCategory} badge={metricValue(project, "Current Phase").toUpperCase()} />
+          {/* Ledger rows: debit / credit bars */}
+          <div className="my-1 flex w-full flex-col gap-3">
+            {[
+              ["w-3/5", "w-1/6", false],
+              ["w-2/5", "w-1/4", true],
+              ["w-4/5", "w-1/6", false],
+              ["w-1/2", "w-1/5", true],
+            ].map(([left, right, credit], i) => (
+              <div key={i} className="flex items-center justify-between gap-6">
+                <div className={`h-2.5 rounded-full ${left as string}`} style={{ background: barColor }} />
+                <div
+                  className={`h-3 rounded-full ${right as string}`}
+                  style={{ background: credit ? "var(--p-win-label)" : barColor }}
+                />
+              </div>
+            ))}
+          </div>
+          <MockFooter
+            left={`LEDGER SPEED: ${metricValue(project, "Ledger Speed").toUpperCase()}`}
+            right={metricValue(project, "Security Scale").toUpperCase()}
+          />
+        </>
+      );
+    }
+    case "direct-market-access":
+    default:
+      return (
+        <>
+          <MockHeader label="PROGRESSIVE WEB APP" badge="OFFLINE ENABLED" />
+          {/* Agriculture market layout abstract */}
+          <div className="my-1 grid w-full grid-cols-2 gap-3">
+            {[true, false].map((lit) => (
+              <div
+                key={String(lit)}
+                className="flex flex-col gap-2 rounded-xl border p-3"
+                style={{ borderColor: lineColor }}
+              >
+                <div className="h-7 w-7 rounded-lg" style={{ background: lit ? labelFill : barColor }} />
+                <div className="h-1.5 w-4/5 rounded-full" style={{ background: barColor }} />
+                <div className="h-2.5 w-1/2 rounded-full" style={{ background: lit ? "var(--p-win-label)" : barColor }} />
+              </div>
+            ))}
+          </div>
+          <MockFooter left="LATENCY: 85MS" right="SYNC: OK" />
+        </>
+      );
+  }
+};
+
+/* ------------------------------------------------------------------ */
+/* Poster decoration: geometric colour blocks unique to each project   */
+/* ------------------------------------------------------------------ */
+
+const Decor: React.FC<{ id: string }> = ({ id }) => {
+  switch (id) {
+    case "ss-agencies":
+      return (
+        <>
+          <div className="absolute -right-[8cqw] -top-[14cqw] h-[48cqw] w-[48cqw] rounded-full bg-[var(--p-acc)]" />
+          <div className="absolute left-[66cqw] top-[18cqw] h-[7cqw] w-[7cqw] rounded-full border-2 border-[var(--p-bg)]" />
+        </>
+      );
+    case "fintech-startup":
+      return (
+        <>
+          <div className="absolute -bottom-[20cqw] -left-[16cqw] h-[52cqw] w-[52cqw] rounded-full bg-[var(--p-acc)]" />
+          <div className="absolute right-[6cqw] top-[8cqw] h-[6cqw] w-[24cqw] rounded-full bg-[var(--p-acc2)]" />
+        </>
+      );
+    case "smart-traffic":
+      return (
+        <>
+          <div className="absolute right-[5cqw] top-[7cqw] h-[34cqw] w-[34cqw] rotate-12 rounded-[5cqw] bg-[var(--p-acc)]" />
+          <div className="absolute -left-[4cqw] bottom-[12cqw] h-[3.5cqw] w-[38cqw] -rotate-3 bg-[var(--p-acc2)]" />
+          <div className="absolute inset-x-0 bottom-[6cqw] border-t-4 border-dashed border-[color-mix(in_srgb,var(--p-fg)_22%,transparent)]" />
+        </>
+      );
+    case "receipt-processing":
+      return (
+        <>
+          <div className="absolute left-[6cqw] top-[7cqw] h-[34cqw] w-[26cqw] -rotate-6 rounded-[2cqw] bg-[var(--p-acc2)]" />
+          <div className="absolute bottom-[7cqw] right-[6cqw] h-[8cqw] w-[30cqw] rounded-full bg-[var(--p-fg)]" />
+        </>
+      );
+    case "internal-developer-platform":
+      return (
+        <>
+          <div className="absolute bottom-[7cqw] left-[6cqw] h-[22cqw] w-[22cqw] rotate-[14deg] rounded-[3cqw] bg-[var(--p-acc)]" />
+          <div className="absolute right-[6cqw] top-[7cqw] h-[26cqw] w-[26cqw] rounded-full border-2 border-[color-mix(in_srgb,var(--p-fg)_45%,transparent)]" />
+        </>
+      );
+    case "iot-monitoring":
+      return (
+        <div className="absolute -right-[12cqw] top-1/2 -translate-y-1/2">
+          {[64, 46, 28].map((size, i) => (
+            <div
+              key={size}
+              className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border"
+              style={{
+                width: `${size}cqw`,
+                height: `${size}cqw`,
+                borderColor: `color-mix(in srgb, var(--p-acc) ${[45, 30, 20][i]}%, transparent)`,
+              }}
+            />
+          ))}
+          <div className="absolute h-[3cqw] w-[3cqw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--p-acc)]" />
         </div>
       );
     case "direct-market-access":
     default:
       return (
-        <div className="absolute inset-0 bg-gradient-to-tr from-orange-950/20 to-neutral-900/40 [html.light_&]:from-orange-100/40 [html.light_&]:to-neutral-200/40 flex items-center justify-center p-8 overflow-hidden select-none">
-          <div className="absolute inset-0 opacity-10 [html.light_&]:opacity-20 bg-[linear-gradient(to_bottom,#f97316_1.5px,transparent_1.5px)] [html.light_&]:bg-[linear-gradient(to_bottom,#c2410c_1.5px,transparent_1.5px)] bg-[size:100%_12px]" />
-          <div className="relative w-full h-full flex flex-col justify-between border border-orange-500/20 [html.light_&]:border-orange-300 rounded-xl p-6 bg-surface-secondary/40 [html.light_&]:bg-white/80 backdrop-blur-sm">
-            <div className="flex justify-between items-start">
-              <span className="text-[10px] font-mono tracking-widest text-orange-400 [html.light_&]:text-orange-850 font-bold">PROGRESSIVE WEB APP</span>
-              <span className="text-[10px] font-mono text-orange-500 bg-orange-500/10 [html.light_&]:text-orange-800 [html.light_&]:bg-orange-100 px-2 py-0.5 rounded font-bold">OFFLINE ENABLED</span>
-            </div>
-            {/* Agriculture market layout abstract */}
-            <div className="grid grid-cols-2 gap-3 my-2 w-full">
-              <div className="border border-border-subtle [html.light_&]:border-orange-200 p-2 rounded flex flex-col gap-1 bg-background/50 [html.light_&]:bg-white shadow-sm">
-                <div className="w-6 h-6 rounded bg-orange-500/20 [html.light_&]:bg-orange-500/10" />
-                <div className="h-1.5 bg-text-secondary/20 [html.light_&]:bg-slate-200 rounded w-4/5" />
-                <div className="h-2 bg-orange-500/30 [html.light_&]:bg-orange-500 rounded w-1/2" />
-              </div>
-              <div className="border border-border-subtle [html.light_&]:border-emerald-200 p-2 rounded flex flex-col gap-1 bg-background/50 [html.light_&]:bg-white shadow-sm">
-                <div className="w-6 h-6 rounded bg-emerald-500/20 [html.light_&]:bg-emerald-500/10" />
-                <div className="h-1.5 bg-text-secondary/20 [html.light_&]:bg-slate-200 rounded w-4/5" />
-                <div className="h-2 bg-emerald-500/30 [html.light_&]:bg-emerald-500 rounded w-1/2" />
-              </div>
-            </div>
-            <div className="flex justify-between text-[10px] font-mono text-text-secondary [html.light_&]:text-orange-900 border-t border-border-subtle pt-3">
-              <span>LATENCY: 85MS</span>
-              <span>SYNC: OK</span>
-            </div>
-          </div>
-        </div>
+        <>
+          <div className="absolute -bottom-[30cqw] left-1/2 h-[64cqw] w-[64cqw] -translate-x-1/2 rounded-full bg-[var(--p-acc)]" />
+          <div className="absolute right-[7cqw] top-[8cqw] h-[10cqw] w-[10cqw] rounded-full bg-[var(--p-acc2)]" />
+        </>
       );
   }
+};
+
+const gridStyle: CSSProperties = {
+  backgroundImage:
+    "linear-gradient(to right, color-mix(in srgb, var(--p-fg) 8%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--p-fg) 8%, transparent) 1px, transparent 1px)",
+  backgroundSize: "4rem 4rem",
+};
+
+const anchorClass = { left: "justify-start", center: "justify-center", right: "justify-end" } as const;
+
+/**
+ * A project "poster": a colour-blocked environment with decorative geometry and
+ * the project's product window floating on it. Stands in for a screenshot, since
+ * the repository has no project imagery.
+ */
+export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
+  id,
+  className = "",
+  anchor = "center",
+  valign = "center",
+  ghost = true,
+}) => {
+  const project = projects.find((p) => p.id === id);
+
+  return (
+    <div
+      className={`${envClass(id)} absolute inset-0 select-none overflow-hidden bg-[var(--p-bg)] text-[var(--p-fg)] [container-type:inline-size]`}
+    >
+      <div className="absolute inset-0 opacity-90" style={gridStyle} />
+      <Decor id={id} />
+      {ghost && project && (
+        <span
+          className="ghost-numeral absolute -bottom-[3cqw] left-[1cqw] text-[27cqw]"
+          style={{ WebkitTextStroke: "1.5px color-mix(in srgb, var(--p-fg) 30%, transparent)" }}
+        >
+          {project.number}
+        </span>
+      )}
+      <div
+        className={`absolute inset-0 flex p-[6cqw] ${valign === "end" ? "items-end" : "items-center"} ${anchorClass[anchor]} ${className}`}
+      >
+        <ProductWindow>
+          <WindowContent id={id} project={project} />
+        </ProductWindow>
+      </div>
+    </div>
+  );
 };

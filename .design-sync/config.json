@@ -1,0 +1,136 @@
+{
+  "projectId": "e4f3ed0a-f136-421d-a33a-6626084b63f5",
+  "shape": "package",
+  "pkg": "idev-creative-coders",
+  "globalName": "IDEV",
+  "entry": ".design-sync/entry.tsx",
+  "srcDir": "src/components",
+  "tsconfig": "tsconfig.app.json",
+  "cssEntry": ".design-sync/.cache/app.css",
+  "buildCmd": "npm run build && (printf '@import url(\"https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap\");\\n' > .design-sync/.cache/app.css && cat dist/assets/index-*.css >> .design-sync/.cache/app.css)",
+  "provider": {
+    "component": "MemoryRouter"
+  },
+  "componentSrcMap": {
+    "Button": "src/components/Button.tsx",
+    "EditorialHeading": "src/components/EditorialHeading.tsx",
+    "FloatingInfoCard": "src/components/FloatingInfoCard.tsx",
+    "GlassPanel": "src/components/GlassPanel.tsx",
+    "ImageFrame": "src/components/ImageFrame.tsx",
+    "Logo": "src/components/Logo.tsx",
+    "Marquee": "src/components/Marquee.tsx",
+    "PageHeader": "src/components/Section.tsx",
+    "ProjectMetrics": "src/components/ProjectMeta.tsx",
+    "ProjectPreview": "src/components/ProjectPreview.tsx",
+    "ProjectShowcase": "src/components/ProjectShowcase.tsx",
+    "ScrollReveal": "src/components/ScrollReveal.tsx",
+    "Section": "src/components/Section.tsx",
+    "SectionHeader": "src/components/Section.tsx",
+    "StatusBadge": "src/components/ProjectMeta.tsx",
+    "TechChips": "src/components/ProjectMeta.tsx",
+    "ThemeSelector": "src/components/ThemeSelector.tsx",
+    "ViewCaseStudyLink": "src/components/ProjectMeta.tsx"
+  },
+  "dtsPropsFor": {
+    "Button": "/** Button label / content. */\n  children: React.ReactNode;\n  /** In-app route (renders a router Link; needs a Router in context). */\n  to?: string;\n  /** External URL (opens in a new tab). */\n  href?: string;\n  onClick?: (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;\n  /** primary = inverse pill, secondary = outlined pill, text = underlined inline action. @default \"primary\" */\n  variant?: \"primary\" | \"secondary\" | \"text\";\n  className?: string;\n  /** Native button type (when neither `to` nor `href` is set). @default \"button\" */\n  type?: \"button\" | \"submit\" | \"reset\";\n  disabled?: boolean;",
+    "EditorialHeading": "/** One entry per visual line; each line is revealed through its own mask. Entries may be JSX. */\n  lines: React.ReactNode[];\n  /** Heading element. @default \"h2\" */\n  as?: \"h1\" | \"h2\" | \"h3\";\n  /** hero = home headline, page = page title, section = section title, card = title inside a card. @default \"section\" */\n  size?: \"hero\" | \"page\" | \"section\" | \"card\";\n  /** Seconds before the first line starts revealing. @default 0 */\n  delay?: number;\n  className?: string;",
+    "FloatingInfoCard": "/** The project to describe (see window.IDEV.projects). */\n  project: {\n  id: string;\n  number: string;\n  title: string;\n  category: string;\n  description: string;\n  status: \"Completed\" | \"Ongoing\";\n  technologies: string[];\n  metrics?: { label: string; value: string }[];\n  content: {\n    overview: string; problem: string; objective: string; solution: string;\n    architecture: string; features: string[]; process: string; results: string;\n  };\n};\n  /** card = vertical stack, bar = wide horizontal strip. @default \"card\" */\n  variant?: \"card\" | \"bar\";\n  /** Heading level for the title. @default \"h3\" */\n  titleAs?: \"h2\" | \"h3\";\n  /** Slow vertical drift against the scroll (card variant only). @default true */\n  drift?: boolean;\n  className?: string;",
+    "GlassPanel": "children: React.ReactNode;\n  /** glass = translucent with blur, solid = opaque raised card. @default \"glass\" */\n  variant?: \"glass\" | \"solid\";\n  className?: string;",
+    "ImageFrame": "/** Media; positioned absolute inset-0 inside the frame's media layer. */\n  children: React.ReactNode;\n  /** Size the frame here (aspect ratio or height). */\n  className?: string;\n  /** Tailwind rounded-* classes to override the default corner radius. */\n  radius?: string;\n  /** Slow scale-down and vertical drift of the media while it crosses the viewport. @default true */\n  parallax?: boolean;\n  /** Static layer above the media (text, badges); does not scale or drift. */\n  overlay?: React.ReactNode;",
+    "Logo": "className?: string;\n  /** Show only the hexagon mark, without the wordmark. @default false */\n  iconOnly?: boolean;",
+    "Marquee": "/** Short labels to loop. */\n  items: string[];\n  /** Scroll speed. @default \"medium\" */\n  speed?: \"slow\" | \"medium\" | \"fast\";\n  className?: string;",
+    "PageHeader": "/** Mono caps label above the heading, e.g. \"OUR PORTFOLIO\". */\n  eyebrow: string;\n  /** Heading lines (page size, rendered as the page's h1). */\n  lines: React.ReactNode[];\n  /** Intro paragraph set in the right-hand column on wide screens. */\n  description?: React.ReactNode;",
+    "Section": "id?: string;\n  className?: string;\n  children: React.ReactNode;",
+    "SectionHeader": "/** Mono caps label, e.g. \"02 // WHAT WE BUILD\". */\n  eyebrow: string;\n  /** Heading lines; each slides up out of a mask. */\n  lines: React.ReactNode[];\n  /** @default \"h2\" */\n  as?: \"h1\" | \"h2\";\n  /** @default \"section\" */\n  size?: \"hero\" | \"page\" | \"section\" | \"card\";\n  /** Supporting copy, right-hand column on wide screens. */\n  description?: React.ReactNode;\n  /** Optional trailing element (e.g. a link) under the description. */\n  action?: React.ReactNode;\n  /** Replaces the default bottom margin (mb-16 sm:mb-24). */\n  className?: string;",
+    "ProjectMetrics": "/** Key figures, e.g. a project's `metrics`. */\n  metrics: { label: string; value: string }[];\n  /** Hero-scale figures for a project page. @default false */\n  large?: boolean;\n  className?: string;",
+    "ProjectPreview": "/** One of the seven project ids: ss-agencies, fintech-startup, smart-traffic, receipt-processing, internal-developer-platform, iot-monitoring, direct-market-access. */\n  id: string;\n  /** Extra classes for the stage, e.g. bottom padding to clear an overlapping panel. */\n  className?: string;",
+    "ProjectShowcase": "/** The project to present (see window.IDEV.projects). */\n  project: {\n  id: string;\n  number: string;\n  title: string;\n  category: string;\n  description: string;\n  status: \"Completed\" | \"Ongoing\";\n  technologies: string[];\n  metrics?: { label: string; value: string }[];\n  content: {\n    overview: string; problem: string; objective: string; solution: string;\n    architecture: string; features: string[]; process: string; results: string;\n  };\n};\n  /** Position in the list; selects one of four compositions (index % 4). */\n  index: number;\n  /** Heading level for the project title. @default \"h3\" */\n  titleAs?: \"h2\" | \"h3\";",
+    "ScrollReveal": "children: React.ReactNode;\n  /** Edge the content travels in FROM. @default \"up\" */\n  direction?: \"up\" | \"down\" | \"left\" | \"right\" | \"none\";\n  /** Seconds. @default 0 */\n  delay?: number;\n  /** Seconds. @default 0.9 */\n  duration?: number;\n  /** Travel distance in px. @default 36 */\n  distance?: number;\n  className?: string;",
+    "StatusBadge": "/** Project state. */\n  status: \"Completed\" | \"Ongoing\";",
+    "TechChips": "/** Technology names, shown as-is. */\n  technologies: string[];\n  className?: string;",
+    "ThemeSelector": "/** Which side the menu opens toward. @default \"bottom\" */\n  align?: \"top\" | \"bottom\";",
+    "ViewCaseStudyLink": "/** Project id; links to /work/<id>. */\n  id: string;\n  className?: string;"
+  },
+  "docsMap": {
+    "Section": ".design-sync/docs/Section.md",
+    "SectionHeader": ".design-sync/docs/SectionHeader.md",
+    "PageHeader": ".design-sync/docs/PageHeader.md",
+    "EditorialHeading": ".design-sync/docs/EditorialHeading.md",
+    "GlassPanel": ".design-sync/docs/GlassPanel.md",
+    "ImageFrame": ".design-sync/docs/ImageFrame.md",
+    "ScrollReveal": ".design-sync/docs/ScrollReveal.md",
+    "Marquee": ".design-sync/docs/Marquee.md",
+    "Logo": ".design-sync/docs/Logo.md",
+    "ThemeSelector": ".design-sync/docs/ThemeSelector.md",
+    "Button": ".design-sync/docs/Button.md",
+    "ViewCaseStudyLink": ".design-sync/docs/ViewCaseStudyLink.md",
+    "StatusBadge": ".design-sync/docs/StatusBadge.md",
+    "TechChips": ".design-sync/docs/TechChips.md",
+    "ProjectMetrics": ".design-sync/docs/ProjectMetrics.md",
+    "ProjectPreview": ".design-sync/docs/ProjectPreview.md",
+    "FloatingInfoCard": ".design-sync/docs/FloatingInfoCard.md",
+    "ProjectShowcase": ".design-sync/docs/ProjectShowcase.md"
+  },
+  "overrides": {
+    "Button": {
+      "viewport": "900x180"
+    },
+    "EditorialHeading": {
+      "viewport": "900x260",
+      "cardMode": "column"
+    },
+    "GlassPanel": {
+      "viewport": "900x380"
+    },
+    "FloatingInfoCard": {
+      "cardMode": "column"
+    },
+    "Logo": {
+      "viewport": "900x160"
+    },
+    "Marquee": {
+      "viewport": "900x150"
+    },
+    "PageHeader": {
+      "viewport": "1100x560",
+      "cardMode": "column"
+    },
+    "ProjectMetrics": {
+      "viewport": "900x240"
+    },
+    "ProjectPreview": {
+      "viewport": "900x420"
+    },
+    "ProjectShowcase": {
+      "cardMode": "column",
+      "viewport": "1280x1000"
+    },
+    "ScrollReveal": {
+      "viewport": "900x420",
+      "cardMode": "column"
+    },
+    "Section": {
+      "viewport": "1000x620"
+    },
+    "SectionHeader": {
+      "viewport": "1100x340",
+      "cardMode": "column"
+    },
+    "StatusBadge": {
+      "viewport": "900x100"
+    },
+    "TechChips": {
+      "viewport": "900x140"
+    },
+    "ThemeSelector": {
+      "viewport": "900x300"
+    },
+    "ViewCaseStudyLink": {
+      "viewport": "900x130"
+    },
+    "ImageFrame": {
+      "viewport": "900x560"
+    }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}
