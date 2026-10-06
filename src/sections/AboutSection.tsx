@@ -3,9 +3,10 @@ import { EditorialHeading } from "../components/EditorialHeading";
 import { ImageFrame } from "../components/ImageFrame";
 import { ScrollReveal } from "../components/ScrollReveal";
 import { Section, SectionHeader } from "../components/Section";
+import { StatTile } from "../components/StatTile";
 
 export const AboutSection: React.FC = () => {
-  const stats = [
+  const stats: { label: string; value: string; tone: "neutral" | "lime" }[] = [
     { label: "Projects & Experiments", value: "25+", tone: "neutral" },
     { label: "Core Technologies", value: "10+", tone: "neutral" },
     { label: "Commitment", value: "100%", tone: "lime" },
@@ -54,20 +55,11 @@ export const AboutSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Stat tiles: the middle one drops, the last one is colour-blocked */}
-      <div className="mt-24 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6 lg:mt-36">
+      {/* Stat tiles: the middle one drops, the last one is colour-blocked; each reacts to hover */}
+      <div className="mt-24 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6 lg:mt-36">
         {stats.map((stat, index) => (
-          <ScrollReveal key={stat.label} direction="up" delay={0.1 * index} className={index === 1 ? "sm:translate-y-12" : ""}>
-            <div
-              className={`flex h-full min-h-[240px] flex-col justify-between gap-12 rounded-[2rem] p-7 text-left sm:min-h-[300px] sm:rounded-[2.5rem] sm:p-9 ${
-                stat.tone === "lime"
-                  ? "bg-brand-lime text-brand-ink"
-                  : "border border-[var(--line-strong)] text-text-primary"
-              }`}
-            >
-              <span className={`eyebrow ${stat.tone === "lime" ? "!text-brand-ink" : ""}`}>{stat.label}</span>
-              <span className="display text-[clamp(4rem,8vw,7.5rem)] leading-[0.85]">{stat.value}</span>
-            </div>
+          <ScrollReveal key={stat.label} direction="up" delay={0.1 * index} className={index === 1 ? "md:translate-y-12" : ""}>
+            <StatTile label={stat.label} value={stat.value} tone={stat.tone} />
           </ScrollReveal>
         ))}
       </div>
