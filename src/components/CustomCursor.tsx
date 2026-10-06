@@ -3,8 +3,9 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
 /**
- * Desktop-only cursor. A small inverted dot normally; over anything marked
- * `data-cursor="view"` (project posters) it grows into a labelled disc.
+ * Desktop-only cursor. A small crimson dot normally; over anything marked
+ * `data-cursor="view"` (project posters) it grows into a labelled disc. Both are the
+ * logo crimson with a thin light ring, so they read on dark and light pages alike.
  */
 export const CustomCursor: React.FC = () => {
   const [cursorType, setCursorType] = useState<"default" | "view" | "open">("default");
@@ -90,8 +91,8 @@ export const CustomCursor: React.FC = () => {
       }}
       className={`pointer-events-none fixed left-0 top-0 z-50 flex items-center justify-center rounded-full font-mono text-[10px] font-bold uppercase tracking-[0.06em] transition-[width,height,background-color] duration-300 ${
         isInteractive
-          ? "h-[88px] w-[88px] border border-brand-ink bg-brand-warm text-brand-ink"
-          : "h-3 w-3 bg-white mix-blend-difference"
+          ? "h-[88px] w-[88px] border-2 border-brand-warm bg-[var(--crimson)] text-brand-warm"
+          : "h-3.5 w-3.5 border-2 border-brand-warm bg-[var(--crimson)]"
       }`}
     >
       {isInteractive && (

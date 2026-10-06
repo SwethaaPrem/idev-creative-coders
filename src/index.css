@@ -8,6 +8,9 @@
 /* project then brings its own colour environment (see .env-*).        */
 /* ------------------------------------------------------------------ */
 :root {
+  /* The logo crimson: light-mode text accent and the cursor, in both themes */
+  --crimson: #6f1526;
+
   --background: #0b0b0d;
   --surface: #131316;
   --surface-secondary: #1b1b20;
@@ -57,8 +60,8 @@ html.light {
   --grid-line: rgba(11, 11, 13, 0.06);
   --ghost: rgba(11, 11, 13, 0.36);
 
-  /* Lime has no contrast on warm white, so the text accent becomes a deepened logo crimson (#6f1526) */
-  --accent: #6f1526;
+  /* Lime has no contrast on warm white, so the text accent becomes the logo crimson */
+  --accent: var(--crimson);
   --accent-fill: #d8ff3e;
   --on-accent: #0b0b0d;
   --accent-edge: #0b0b0d;
@@ -252,7 +255,7 @@ html.light .env-grape-pink,
 html.light .env-pink-ink { --p-label: #b0128a; }
 html.light .env-paper-cyan,
 html.light .env-ink-cyan { --p-label: #0a6e94; }
-html.light .env-violet-lime { --p-label: #6f1526; }
+html.light .env-violet-lime { --p-label: var(--crimson); }
 
 /* A warm-white poster would vanish into a warm-white page, so it gets a slightly deeper paper tone */
 html.light .env-paper-cyan { --p-bg: #e5e0d1; }
