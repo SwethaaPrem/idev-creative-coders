@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { PageHeader } from "../components/Section";
+import { PageHeader, TwoLayer } from "../components/Section";
 import { AboutSection } from "../sections/AboutSection";
 import { WhyIDEV } from "../sections/WhyIDEV";
 import { CTASection } from "../sections/CTASection";
@@ -15,11 +15,16 @@ export const AboutPage: React.FC = () => {
       <PageHeader
         eyebrow="STUDIO PROFILE"
         lines={["We merge creative design", "with engineering discipline."]}
-        description="IDEV Creative Coders was founded on the belief that digital solutions should perform beautifully. We build bespoke software architectures, AI platforms, responsive applications, and technical interfaces designed from scratch to deliver real results."
+        description={
+          <TwoLayer
+            plain="We make websites, apps and smart tools that work beautifully and are easy to use."
+            detail="IDEV Creative Coders was founded on the belief that digital solutions should perform beautifully. We build bespoke software architectures, AI platforms, responsive applications, and technical interfaces designed from scratch to deliver real results."
+          />
+        }
       />
 
       {/* Main split sections */}
-      <AboutSection />
+      <AboutSection showBelief={false} />
       <WhyIDEV />
       <CTASection />
     </div>

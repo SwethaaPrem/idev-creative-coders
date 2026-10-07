@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Shield, Lock, CheckCircle2 } from "lucide-react";
 import { GlassPanel } from "../components/GlassPanel";
 import { ScrollReveal } from "../components/ScrollReveal";
-import { Section, SectionHeader } from "../components/Section";
+import { Section, SectionHeader, TwoLayer } from "../components/Section";
 
 interface SecurityNode {
   name: string;
@@ -40,7 +40,12 @@ export const SecuritySection: React.FC = () => {
       <SectionHeader
         eyebrow="04 // CYBERSECURITY"
         lines={["SECURITY IS PART OF", "THE ARCHITECTURE."]}
-        description="Security considerations are integrated across applications, APIs, identity, infrastructure and cloud environments. We design security boundaries directly into the initial blueprints."
+        description={
+          <TwoLayer
+            plain="Your data and your users are protected from day one, not patched in later."
+            detail="Security considerations are integrated across applications, APIs, identity, infrastructure and cloud environments. We design security boundaries directly into the initial blueprints."
+          />
+        }
       />
 
       {/* Security Flow Diagram Block */}

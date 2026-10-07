@@ -7,14 +7,31 @@ import { ThemeSelector } from "./ThemeSelector";
 import { Logo } from "./Logo";
 import { PREMIUM_EASE } from "../lib/motion";
 
-const navLinks = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
+interface NavItem {
+  name: string;
+  path: string;
+  hash?: string;
+}
+
+/** Narrative order: what we do, who we are, the team, the work, how we work, get in touch. */
+const navLinks: NavItem[] = [
   { name: "Services", path: "/services" },
-  { name: "Work", path: "/work" },
+  { name: "About", path: "/about" },
+  { name: "Team", path: "/about", hash: "#team" },
+  { name: "Projects", path: "/work" },
   { name: "Process", path: "/process" },
   { name: "Contact", path: "/contact" },
 ];
+
+const isLinkActive = (link: NavItem, loc: { pathname: string; hash: string }): boolean => {
+  const onPage = loc.pathname === link.path || (link.path === "/work" && loc.pathname.startsWith("/work/"));
+  if (!onPage) return false;
+  // "About" and "Team" share a page, so the hash decides which one is lit
+  if (link.hash) return loc.hash === link.hash;
+  return link.path !== "/about" || loc.hash !== "#team";
+};
+
+const linkTarget = (link: NavItem) => (link.hash ? { pathname: link.path, hash: link.hash } : link.path);
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,11 +77,11 @@ export const Navbar: React.FC = () => {
           {/* Desktop navigation: small mono labels with a tiny index */}
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
             {navLinks.map((link, index) => {
-              const isActive = location.pathname === link.path;
+              const isActive = isLinkActive(link, location);
               return (
                 <Link
                   key={link.name}
-                  to={link.path}
+                  to={linkTarget(link)}
                   className={`group relative flex items-baseline gap-1.5 rounded-full px-4 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.06em] outline-none transition-colors duration-500 focus-visible:ring-2 focus-visible:ring-accent ${
                     isActive ? "text-text-primary" : "text-text-secondary hover:text-text-primary"
                   }`}
@@ -120,7 +137,7 @@ export const Navbar: React.FC = () => {
           >
             <div className="flex flex-col border-t border-border-subtle">
               {navLinks.map((link, index) => {
-                const isActive = location.pathname === link.path;
+                const isActive = isLinkActive(link, location);
                 return (
                   <div key={link.name} className="overflow-hidden border-b border-border-subtle">
                     <motion.div
@@ -129,7 +146,7 @@ export const Navbar: React.FC = () => {
                       transition={{ delay: 0.08 + index * 0.06, duration: 0.8, ease: PREMIUM_EASE }}
                     >
                       <Link
-                        to={link.path}
+                        to={linkTarget(link)}
                         className={`flex items-baseline justify-between gap-4 py-3.5 font-display text-[clamp(2.4rem,12vw,4.25rem)] font-extrabold uppercase leading-none tracking-[-0.02em] [font-stretch:88%] transition-colors duration-300 ${
                           isActive ? "text-accent" : "text-text-primary hover:text-accent"
                         }`}

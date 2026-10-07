@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { PageHeader, Section } from "../components/Section";
+import { PageHeader, Section, TwoLayer } from "../components/Section";
 import { ProjectIndex } from "../components/ProjectIndex";
 import { ProjectPair, ProjectShowcase } from "../components/ProjectShowcase";
 import type { ShowcaseLayout } from "../components/ProjectShowcase";
@@ -46,7 +46,12 @@ export const WorkPage: React.FC = () => {
       <PageHeader
         eyebrow="OUR PORTFOLIO"
         lines={["Products built", "to perform."]}
-        description="Explore our engineering works, AI automation solutions, custom platforms, and digital product designs. Each case study details our strategy, system architecture, and outcomes."
+        description={
+          <TwoLayer
+            plain="A look at what we have built: real products, the problem each one solved, and how it turned out."
+            detail="Explore our engineering works, AI automation solutions, custom platforms, and digital product designs. Each case study details our strategy, system architecture, and outcomes."
+          />
+        }
       >
         <ProjectIndex />
       </PageHeader>

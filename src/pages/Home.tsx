@@ -18,15 +18,16 @@ export const Home: React.FC = () => {
 
   return (
     <div className="w-full">
+      {/* The story, in order: WHAT we do → WHO we are → WHY IDEV (what makes us different) → HOW we work, then the work itself */}
       <Hero />
+      <Services variant="compact" eyebrow="01 // WHAT WE DO" />
+      <AboutSection eyebrow="02 // WHO WE ARE" showStats={false} tight />
+      <WhyIDEV eyebrow="03 // WHY IDEV" showStats tight />
+      <ProcessTimeline variant="compact" eyebrow="04 // HOW WE WORK" />
       <IntroStrip />
-      <AboutSection />
-      <Services />
-      <ProcessTimeline />
-      <SelectedWork />
-      <WhyIDEV />
+      <SelectedWork eyebrow="05 // OUR PROJECTS" />
       <CTASection />
-      <ContactSection />
+      <ContactSection eyebrow="06 // INQUIRY" />
     </div>
   );
 };

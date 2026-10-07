@@ -43,7 +43,13 @@ export const FloatingInfoCard: React.FC<FloatingInfoCardProps> = ({
     />
   ) : null;
 
-  const description = <p className="text-sm leading-relaxed text-text-secondary">{project.description}</p>;
+  // Plain-language sentence first, the original technical description second
+  const description = (
+    <div className="flex flex-col gap-2">
+      <p className="text-base font-medium leading-snug text-text-primary">{project.plain}</p>
+      <p className="text-xs leading-relaxed text-text-secondary">{project.description}</p>
+    </div>
+  );
 
   return (
     <motion.div

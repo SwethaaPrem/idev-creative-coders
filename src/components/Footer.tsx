@@ -13,9 +13,10 @@ export const Footer: React.FC = () => {
   ];
 
   const quickLinks = [
-    { name: "Work", path: "/work" },
     { name: "Services", path: "/services" },
     { name: "About", path: "/about" },
+    { name: "Team", path: "/about#team" },
+    { name: "Projects", path: "/work" },
     { name: "Contact", path: "/contact" },
   ];
 

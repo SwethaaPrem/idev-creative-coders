@@ -1,7 +1,8 @@
 import React from "react";
 import { Target, Layers, Shield, Cpu } from "lucide-react";
 import { ScrollReveal } from "../components/ScrollReveal";
-import { Section, SectionHeader } from "../components/Section";
+import { Section, SectionHeader, TwoLayer } from "../components/Section";
+import { StatsStrip } from "../components/StatsStrip";
 
 type Tone = "plain" | "lime" | "inverse";
 
@@ -26,12 +27,24 @@ const toneClasses: Record<Tone, { card: string; num: string; desc: string; icon:
   },
 };
 
-export const WhyIDEV: React.FC = () => {
-  const points: { num: string; icon: React.ReactNode; title: string; desc: string; tone: Tone }[] = [
+interface WhyIDEVProps {
+  eyebrow?: string;
+  /** Show the headline numbers under the reasons, as proof (home page). */
+  showStats?: boolean;
+  tight?: boolean;
+}
+
+export const WhyIDEV: React.FC<WhyIDEVProps> = ({
+  eyebrow = "08 // WHY IDEV CREATIVE CODERS",
+  showStats = false,
+  tight = false,
+}) => {
+  const points: { num: string; icon: React.ReactNode; title: string; plain: string; desc: string; tone: Tone }[] = [
     {
       num: "01",
       icon: <Target className="w-5 h-5" />,
       title: "BUSINESS-FIRST",
+      plain: "We start by understanding what you actually need, then pick the technology to match.",
       desc: "Engineering starts with understanding the actual requirement. We align technical choices with commercial outcomes.",
       tone: "plain",
     },
@@ -39,6 +52,7 @@ export const WhyIDEV: React.FC = () => {
       num: "02",
       icon: <Layers className="w-5 h-5" />,
       title: "CUSTOM",
+      plain: "Built around the way you work, not squeezed into a one-size-fits-all template.",
       desc: "Solutions are designed around the client's workflow. We build proprietary assets rather than wrapping generic SaaS scripts.",
       tone: "lime",
     },
@@ -46,6 +60,7 @@ export const WhyIDEV: React.FC = () => {
       num: "03",
       icon: <Shield className="w-5 h-5" />,
       title: "SECURE",
+      plain: "Safety is planned in from day one, not bolted on at the end.",
       desc: "Security is considered throughout architecture and development. We design security boundaries into every layer of our code.",
       tone: "inverse",
     },
@@ -53,14 +68,22 @@ export const WhyIDEV: React.FC = () => {
       num: "04",
       icon: <Cpu className="w-5 h-5" />,
       title: "SCALABLE",
+      plain: "Easy to look after today, and ready to grow when you do.",
       desc: "Systems are designed with maintainability and future growth in mind. We build architectures that grow with your user base.",
       tone: "plain",
     },
   ];
 
   return (
-    <Section className="select-none">
-      <SectionHeader eyebrow="08 // WHY IDEV CREATIVE CODERS" lines={["WHY IDEV CREATIVE CODERS."]} />
+    <Section tight={tight} className="select-none">
+      <SectionHeader
+        eyebrow={eyebrow}
+        className={tight ? "mb-10 sm:mb-14" : undefined}
+        lines={["WHY IDEV CREATIVE CODERS."]}
+        description={
+          <TwoLayer plain="We bring creative thinking and solid engineering together in one team, so what we build is easy to use, shaped around your needs, and ready to grow. Every project follows six clear steps, from listening first to improving after launch." />
+        }
+      />
 
       {/* Offset 2x2: the right-hand column drops down for an asymmetric rhythm */}
       <div className="grid grid-cols-1 gap-4 text-left md:grid-cols-2 md:gap-6 lg:pb-16">
@@ -86,13 +109,16 @@ export const WhyIDEV: React.FC = () => {
                   <h3 className="font-display text-3xl font-extrabold uppercase tracking-[-0.015em] [font-stretch:88%] sm:text-4xl">
                     {point.title}
                   </h3>
-                  <p className={`max-w-md text-sm leading-relaxed sm:text-base ${tone.desc}`}>{point.desc}</p>
+                  <p className="max-w-md text-base font-medium leading-snug sm:text-lg">{point.plain}</p>
+                  <p className={`max-w-md text-sm leading-relaxed ${tone.desc}`}>{point.desc}</p>
                 </div>
               </div>
             </ScrollReveal>
           );
         })}
       </div>
+
+      {showStats && <StatsStrip className="mt-16 lg:mt-24" />}
     </Section>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { PageHeader } from "../components/Section";
+import { PageHeader, TwoLayer } from "../components/Section";
 import { Services } from "../sections/Services";
 import { ProcessTimeline } from "../sections/ProcessTimeline";
 import { SecuritySection } from "../sections/SecuritySection";
@@ -18,7 +18,12 @@ export const ServicesPage: React.FC = () => {
       <PageHeader
         eyebrow="WHAT WE DO"
         lines={["Digital solutions designed", "around business workflows."]}
-        description="We provide full-lifecycle technical and creative services. From custom cloud configurations and automation pipelines to intelligent NLP systems and responsive layouts, our solutions are built to support growth."
+        description={
+          <TwoLayer
+            plain="Everything needed to take an idea online: design, software, cloud, security and AI, all from one team."
+            detail="We provide full-lifecycle technical and creative services. From custom cloud configurations and automation pipelines to intelligent NLP systems and responsive layouts, our solutions are built to support growth."
+          />
+        }
       />
 
       <Services />

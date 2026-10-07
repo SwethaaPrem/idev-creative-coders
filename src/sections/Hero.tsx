@@ -19,7 +19,7 @@ export const Hero: React.FC = () => {
   const blockY = useTransform(scrollYProgress, [0, 1], [0, 90]);
 
   const scrollToIntro = () => {
-    const target = document.getElementById("intro-strip");
+    const target = document.getElementById("services");
     if (target) target.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -29,7 +29,7 @@ export const Hero: React.FC = () => {
         {/* Technical metadata row */}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 sm:mb-10">
           <ScrollReveal delay={0.2} direction="none">
-            <SectionLabel>CREATIVE TECHNOLOGY STUDIO</SectionLabel>
+            <SectionLabel>A CREATIVE TECHNOLOGY TEAM</SectionLabel>
           </ScrollReveal>
           <ScrollReveal delay={0.3} direction="none" className="hidden md:block">
             <span className="eyebrow">DESIGN × CODE × IDEAS</span>
@@ -70,7 +70,7 @@ export const Hero: React.FC = () => {
                     Start a Project <ArrowUpRight className="ml-1 h-4 w-4" />
                   </Button>
                   <Button variant="secondary" onClick={scrollToIntro} className="w-full sm:w-auto">
-                    Explore Our Work
+                    See What We Do
                   </Button>
                 </div>
               </div>

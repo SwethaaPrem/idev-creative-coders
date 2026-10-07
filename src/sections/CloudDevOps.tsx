@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Server, ArrowRight } from "lucide-react";
 import { GlassPanel } from "../components/GlassPanel";
 import { ScrollReveal } from "../components/ScrollReveal";
-import { Section, SectionHeader } from "../components/Section";
+import { Section, SectionHeader, TwoLayer } from "../components/Section";
 
 export const CloudDevOps: React.FC = () => {
   const [activeStep, setActiveStep] = useState<string>("LOAD BALANCER");
@@ -41,7 +41,12 @@ export const CloudDevOps: React.FC = () => {
       <SectionHeader
         eyebrow="05 // CLOUD & DEVOPS"
         lines={["ENGINEERED FOR", "PRODUCTION."]}
-        description="We orchestrate cloud infrastructure built on resilience, observability, and scale. Using Docker, Terraform, and automated CI/CD deployment architectures to keep platforms online."
+        description={
+          <TwoLayer
+            plain="We make sure what we build stays online, runs quickly and can grow with you."
+            detail="We orchestrate cloud infrastructure built on resilience, observability, and scale. Using Docker, Terraform, and automated CI/CD deployment architectures to keep platforms online."
+          />
+        }
       />
 
       {/* Console / Layout Grid */}

@@ -81,7 +81,10 @@ const InfoBlock: React.FC<{ project: Project; className?: string; children?: Rea
   children,
 }) => (
   <ScrollReveal delay={0.1} className={`flex flex-col gap-8 ${className}`}>
-    <p className="max-w-md text-base leading-relaxed text-text-secondary">{project.description}</p>
+    <div className="flex max-w-md flex-col gap-2">
+      <p className="text-base font-medium leading-snug text-text-primary">{project.plain}</p>
+      <p className="text-sm leading-relaxed text-text-secondary">{project.description}</p>
+    </div>
     <TechChips technologies={project.technologies} />
     {project.metrics && (
       <ProjectMetrics metrics={project.metrics} className="max-w-md border-t border-border-subtle pt-6" />

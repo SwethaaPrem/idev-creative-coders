@@ -2,6 +2,8 @@ export interface Project {
   id: string;
   title: string;
   category: string;
+  /** One plain-language sentence for non-technical visitors, shown before the technical `description`. */
+  plain: string;
   description: string;
   technologies: string[];
   number: string;
@@ -26,6 +28,7 @@ export const projects: Project[] = [
     status: "Completed",
     title: "SS Agencies Billing Platform",
     category: "Billing Platform / Payments",
+    plain: "A billing system that helps a business send invoices and get paid, with every payment recorded automatically.",
     description: "A premium digital invoicing and billing portal designed to automate client billing, invoice settlements, and real-time ledger accounting.",
     technologies: ["React", "Node.js", "PostgreSQL", "Stripe API", "Vercel", "Tailwind CSS"],
     metrics: [
@@ -56,6 +59,7 @@ export const projects: Project[] = [
     status: "Ongoing",
     title: "Fintech Startup Platform",
     category: "Fintech / Banking API / Core Ledger",
+    plain: "A platform for moving money across borders, built so every transaction is recorded accurately and securely.",
     description: "An enterprise fintech platform currently in active development, offering cross-border remittances, core banking API integrations, and audited ledger databases.",
     technologies: ["React", "Node.js", "PostgreSQL", "Stripe API", "Vercel", "Tailwind CSS"],
     metrics: [
@@ -85,6 +89,7 @@ export const projects: Project[] = [
     status: "Completed",
     title: "Smart Traffic Management System",
     category: "AI / Computer Vision / Web Dashboard",
+    plain: "Cameras and software that spot vehicles, predict traffic jams and show city operators what is happening live.",
     description: "An intelligent traffic monitoring platform designed to detect vehicles, analyze traffic conditions, predict congestion, and visualize real-time traffic insights.",
     technologies: ["Python", "OpenCV", "YOLO", "Machine Learning", "Web Dashboard"],
     metrics: [
@@ -115,6 +120,7 @@ export const projects: Project[] = [
     status: "Completed",
     title: "AI-Powered Receipt Processing",
     category: "AI / AWS / Automation",
+    plain: "Upload a photo of a receipt and the system reads it and files the details for you.",
     description: "An automated receipt processing system that extracts information from uploaded receipts and organizes structured data using cloud-based AI services.",
     technologies: ["AWS", "Textract", "Lambda", "S3", "DynamoDB", "API Gateway"],
     metrics: [
@@ -145,6 +151,7 @@ export const projects: Project[] = [
     status: "Completed",
     title: "Internal Developer Platform",
     category: "Software / Developer Tools",
+    plain: "A one-stop tool that lets software teams set up what they need to work in minutes instead of days.",
     description: "A modern internal platform designed to simplify developer workflows, authentication, application management, and engineering operations.",
     technologies: ["React", "Flask", "Python", "MySQL", "JWT", "Docker"],
     metrics: [
@@ -175,6 +182,7 @@ export const projects: Project[] = [
     status: "Completed",
     title: "Smart IoT Monitoring",
     category: "IoT / Automation",
+    plain: "Small connected sensors that watch machines and warn people before something breaks.",
     description: "An intelligent IoT solution combining connected devices, sensors, monitoring, and automated decision-making.",
     technologies: ["IoT", "Arduino", "Sensors", "Cloud", "AI"],
     metrics: [
@@ -205,6 +213,7 @@ export const projects: Project[] = [
     status: "Completed",
     title: "Direct Market Access",
     category: "Web Application / Agriculture",
+    plain: "A website that lets farmers sell directly to buyers, without middlemen.",
     description: "A digital platform designed to connect farmers and markets while simplifying product discovery and direct access.",
     technologies: ["Web", "Database", "API", "Responsive UI"],
     metrics: [

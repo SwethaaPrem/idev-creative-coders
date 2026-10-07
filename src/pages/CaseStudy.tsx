@@ -77,7 +77,8 @@ export const CaseStudy: React.FC = () => {
           </div>
           <div className="lg:col-span-4">
             <ScrollReveal delay={0.2}>
-              <p className="text-base leading-relaxed text-text-secondary sm:text-lg">{project.description}</p>
+              <p className="text-lg font-medium leading-snug text-text-primary sm:text-xl">{project.plain}</p>
+              <p className="mt-3 text-sm leading-relaxed text-text-secondary sm:text-base">{project.description}</p>
             </ScrollReveal>
           </div>
         </div>

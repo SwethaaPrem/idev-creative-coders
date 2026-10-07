@@ -3,19 +3,31 @@ import { EditorialHeading } from "../components/EditorialHeading";
 import { ImageFrame } from "../components/ImageFrame";
 import { ScrollReveal } from "../components/ScrollReveal";
 import { Section, SectionHeader } from "../components/Section";
-import { StatTile } from "../components/StatTile";
+import { StatsStrip } from "../components/StatsStrip";
 import { ThinkingIllustration } from "../components/ThinkingIllustration";
 
-export const AboutSection: React.FC = () => {
-  const stats: { label: string; value: string; tone: "neutral" | "lime" }[] = [
-    { label: "Projects & Experiments", value: "25+", tone: "neutral" },
-    { label: "Core Technologies", value: "10+", tone: "neutral" },
-    { label: "Commitment", value: "100%", tone: "lime" },
-  ];
+interface AboutSectionProps {
+  eyebrow?: string;
+  /** The "why we exist" line. The About page already opens with it, so it passes `false`. */
+  showBelief?: boolean;
+  /** The headline numbers. On the home page they sit under "Why IDEV" instead, as proof. */
+  showStats?: boolean;
+  tight?: boolean;
+}
 
+export const AboutSection: React.FC<AboutSectionProps> = ({
+  eyebrow = "01 // WHO WE ARE",
+  showBelief = true,
+  showStats = true,
+  tight = false,
+}) => {
   return (
-    <Section id="about">
-      <SectionHeader eyebrow="01 // WHO WE ARE" lines={["We are IDEV Creative Coders."]} />
+    <Section id="about" tight={tight}>
+      <SectionHeader
+        eyebrow={eyebrow}
+        lines={["We are IDEV Creative Coders."]}
+        className={tight ? "mb-10 sm:mb-14" : undefined}
+      />
 
       {/* Calm vector panel on the right, the description card overlapping its left edge */}
       <div className="relative grid grid-cols-12 items-end lg:mb-24">
@@ -41,26 +53,28 @@ export const AboutSection: React.FC = () => {
           </ScrollReveal>
         </div>
 
-        {/* Floating description panel */}
-        <div className="relative z-20 col-span-12 row-start-2 mx-3 -mt-14 sm:mx-6 lg:col-span-5 lg:col-start-1 lg:row-start-1 lg:mx-0 lg:mt-0 lg:translate-y-20">
+        {/* Floating description panel: also the target of the "Team" navigation link */}
+        <div
+          id="team"
+          className="relative z-20 col-span-12 row-start-2 mx-3 -mt-14 scroll-mt-28 sm:mx-6 lg:col-span-5 lg:col-start-1 lg:row-start-1 lg:mx-0 lg:mt-0 lg:translate-y-20"
+        >
           <ScrollReveal delay={0.2}>
             <div className="glass rounded-[1.75rem] p-6 text-left sm:rounded-[2rem] sm:p-10">
+              <span className="eyebrow mb-4 block text-text-primary">THE TEAM</span>
               <p className="text-base leading-relaxed text-text-primary sm:text-lg">
                 We are a creative technology team focused on turning ambitious ideas into useful digital products. From websites and business applications to AI-powered platforms and cloud solutions, we combine creative thinking with engineering discipline.
               </p>
+              {showBelief && (
+                <p className="mt-4 text-sm leading-relaxed text-text-secondary sm:text-base">
+                  IDEV Creative Coders was founded on the belief that digital solutions should perform beautifully.
+                </p>
+              )}
             </div>
           </ScrollReveal>
         </div>
       </div>
 
-      {/* Stat tiles: the middle one drops, the last one is colour-blocked; each reacts to hover */}
-      <div className="mt-24 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6 lg:mt-36">
-        {stats.map((stat, index) => (
-          <ScrollReveal key={stat.label} direction="up" delay={0.1 * index} className={index === 1 ? "md:translate-y-12" : ""}>
-            <StatTile label={stat.label} value={stat.value} tone={stat.tone} />
-          </ScrollReveal>
-        ))}
-      </div>
+      {showStats && <StatsStrip />}
     </Section>
   );
 };

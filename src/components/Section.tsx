@@ -6,13 +6,15 @@ import { ScrollReveal } from "./ScrollReveal";
 
 interface SectionProps {
   id?: string;
+  /** Slightly shorter vertical padding, used by the compact home-page story sections. */
+  tight?: boolean;
   className?: string;
   children: ReactNode;
 }
 
 /** Page-width content section with the shared gutter and vertical rhythm. */
-export const Section: React.FC<SectionProps> = ({ id, className = "", children }) => (
-  <section id={id} className={`relative py-24 sm:py-36 ${className}`}>
+export const Section: React.FC<SectionProps> = ({ id, tight = false, className = "", children }) => (
+  <section id={id} className={`relative ${tight ? "py-16 sm:py-24" : "py-24 sm:py-36"} ${className}`}>
     <div className="mx-auto w-full max-w-[1400px] px-5 sm:px-8 md:px-12">{children}</div>
   </section>
 );
@@ -26,6 +28,17 @@ export const SectionLabel: React.FC<{ children: ReactNode; className?: string }>
     <span className="h-2 w-2 shrink-0 bg-accent-fill [html.light_&]:outline [html.light_&]:outline-1 [html.light_&]:outline-text-primary" />
     {children}
   </span>
+);
+
+/**
+ * Two-layer copy: a plain-language sentence first (for anyone), the technical
+ * wording second and smaller (for people who want the detail).
+ */
+export const TwoLayer: React.FC<{ plain: ReactNode; detail?: ReactNode }> = ({ plain, detail }) => (
+  <>
+    <span className="block text-text-primary">{plain}</span>
+    {detail && <span className="mt-3 block text-sm leading-relaxed text-text-secondary sm:text-base">{detail}</span>}
+  </>
 );
 
 interface SectionHeaderProps {

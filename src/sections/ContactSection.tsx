@@ -5,7 +5,11 @@ import { EditorialHeading } from "../components/EditorialHeading";
 import { ScrollReveal } from "../components/ScrollReveal";
 import { Section, SectionLabel } from "../components/Section";
 
-export const ContactSection: React.FC = () => {
+interface ContactSectionProps {
+  eyebrow?: string;
+}
+
+export const ContactSection: React.FC<ContactSectionProps> = ({ eyebrow = "09 // INQUIRY" }) => {
   return (
     <Section className="select-none">
       <div className="grid grid-cols-1 items-start gap-16 lg:grid-cols-12 lg:gap-12">
@@ -14,7 +18,7 @@ export const ContactSection: React.FC = () => {
         <div className="flex flex-col gap-10 text-left lg:col-span-5">
           <div>
             <ScrollReveal direction="none" className="mb-8">
-              <SectionLabel>09 // INQUIRY</SectionLabel>
+              <SectionLabel>{eyebrow}</SectionLabel>
             </ScrollReveal>
             <EditorialHeading
               size="section"

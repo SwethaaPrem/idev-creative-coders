@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ScrollReveal } from "../components/ScrollReveal";
-import { Section, SectionHeader } from "../components/Section";
+import { Section, SectionHeader, TwoLayer } from "../components/Section";
 
 interface TechNode {
   name: string;
@@ -56,7 +56,12 @@ export const TechnologyConstellation: React.FC = () => {
       <SectionHeader
         eyebrow="06 // TECHNOLOGY STEERAGE"
         lines={["Technology Constellation."]}
-        description="We focus on a highly robust stack built around modern standards. Rather than adopting every trend, we master the tools that power stable systems."
+        description={
+          <TwoLayer
+            plain="We stick to reliable, well-understood tools instead of chasing every trend."
+            detail="We focus on a highly robust stack built around modern standards. Rather than adopting every trend, we master the tools that power stable systems."
+          />
+        }
       />
 
       {/* Constellation Canvas Block */}
