@@ -1,9 +1,8 @@
 import React from "react";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { projects } from "../data/projects";
 import type { Project } from "../data/projects";
-import { envClass, pad, splitTitle } from "../lib/projectEnv";
+import { envClass, splitTitle } from "../lib/projectEnv";
 import { EditorialHeading } from "./EditorialHeading";
 import { FloatingInfoCard } from "./FloatingInfoCard";
 import { ImageFrame } from "./ImageFrame";
@@ -23,15 +22,10 @@ interface ProjectShowcaseProps {
   layout?: ShowcaseLayout;
 }
 
-/** 01 / 07 ——— CATEGORY  [STATUS] */
+/** ——— CATEGORY  [STATUS] */
 export const SceneMeta: React.FC<{ project: Project; className?: string }> = ({ project, className = "" }) => (
   <ScrollReveal direction="none" className={className}>
     <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-      <span className="font-mono text-base font-bold tracking-[0.04em] text-text-primary">
-        {project.number}
-        <span className="text-[var(--p-label)]"> / </span>
-        {pad(projects.length)}
-      </span>
       <span className="hidden h-px min-w-8 flex-1 bg-[var(--line-strong)] sm:block" />
       <span className="eyebrow leading-snug">{project.category}</span>
       <StatusBadge status={project.status} />
@@ -119,8 +113,8 @@ export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
             <SceneTitle
               project={project}
               as={titleAs}
-              max={14}
-              className="lg:!text-[var(--p-fg)]"
+              max={18}
+              className="lg:!text-[clamp(2.4rem,5.6vw,5.9rem)] lg:!text-[var(--p-fg)]"
             />
           </div>
           <ProjectVisual

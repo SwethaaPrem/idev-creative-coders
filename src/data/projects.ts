@@ -26,7 +26,7 @@ export const projects: Project[] = [
     id: "ss-agencies",
     number: "01",
     status: "Completed",
-    title: "SS Agencies Billing Platform",
+    title: "Pain and Hardware Industry Billing Platform",
     category: "Billing Platform / Payments",
     plain: "A billing system that helps a business send invoices and get paid, with every payment recorded automatically.",
     description: "A premium digital invoicing and billing portal designed to automate client billing, invoice settlements, and real-time ledger accounting.",

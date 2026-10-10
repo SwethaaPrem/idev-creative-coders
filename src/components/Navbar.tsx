@@ -74,9 +74,9 @@ export const Navbar: React.FC = () => {
             <Logo />
           </Link>
 
-          {/* Desktop navigation: small mono labels with a tiny index */}
+          {/* Desktop navigation: small mono labels */}
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
-            {navLinks.map((link, index) => {
+            {navLinks.map((link) => {
               const isActive = isLinkActive(link, location);
               return (
                 <Link
@@ -86,13 +86,6 @@ export const Navbar: React.FC = () => {
                     isActive ? "text-text-primary" : "text-text-secondary hover:text-text-primary"
                   }`}
                 >
-                  <span
-                    className={`text-[9px] transition-colors duration-500 ${
-                      isActive ? "text-accent" : "text-text-secondary group-hover:text-accent"
-                    }`}
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
                   {link.name}
                   {isActive && (
                     <motion.span
@@ -151,12 +144,7 @@ export const Navbar: React.FC = () => {
                           isActive ? "text-accent" : "text-text-primary hover:text-accent"
                         }`}
                       >
-                        <span className="flex items-baseline gap-4">
-                          <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-text-secondary">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          {link.name}
-                        </span>
+                        <span>{link.name}</span>
                         <ArrowUpRight className="h-6 w-6 shrink-0 self-center opacity-40" />
                       </Link>
                     </motion.div>

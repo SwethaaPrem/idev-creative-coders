@@ -7,9 +7,7 @@ import { RotatingBadge } from "../components/RotatingBadge";
 import { ScrollReveal } from "../components/ScrollReveal";
 import { SectionLabel } from "../components/Section";
 import { ThreeArchitecture } from "../components/ThreeArchitecture";
-import { projects } from "../data/projects";
 import { PREMIUM_EASE } from "../lib/motion";
-import { pad } from "../lib/projectEnv";
 
 export const Hero: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -121,7 +119,7 @@ export const Hero: React.FC = () => {
             </span>
             Scroll to explore
           </button>
-          <span className="eyebrow hidden sm:block">Selected work — {pad(projects.length)}</span>
+          <span className="eyebrow hidden sm:block">Selected work</span>
         </div>
       </div>
     </section>

@@ -67,7 +67,7 @@ export const CaseStudy: React.FC = () => {
             <ScrollReveal direction="none" className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-3">
               <span className="eyebrow flex items-center gap-3 !text-[var(--p-label)]">
                 <span className="h-2 w-2 bg-[var(--p-label)]" />
-                PROJECT {project.number}
+                PROJECT
               </span>
               <span className="eyebrow">/</span>
               <span className="eyebrow">{project.category}</span>

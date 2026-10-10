@@ -15,9 +15,6 @@ export const ProjectIndex: React.FC = () => (
               href={`#project-${project.id}`}
               className="group flex items-center gap-5 border-b border-border-subtle py-4 transition-colors duration-500 hover:text-[var(--p-label)]"
             >
-              <span className="font-mono text-xs font-bold text-text-secondary transition-colors duration-500 group-hover:text-[var(--p-label)]">
-                {project.number}
-              </span>
               <span className="flex-1 font-display text-lg font-bold tracking-[-0.02em] sm:text-xl">
                 {project.title}
               </span>

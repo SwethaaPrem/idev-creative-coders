@@ -17,7 +17,7 @@ export const AboutPage: React.FC = () => {
         lines={["We merge creative design", "with engineering discipline."]}
         description={
           <TwoLayer
-            plain="We make websites, apps and smart tools that work beautifully and are easy to use."
+            plain="We make softwares, websites, applications and industrial smart tools that work beautifully and are easy to use."
             detail="IDEV Creative Coders was founded on the belief that digital solutions should perform beautifully. We build bespoke software architectures, AI platforms, responsive applications, and technical interfaces designed from scratch to deliver real results."
           />
         }
