@@ -114,7 +114,7 @@ export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
               project={project}
               as={titleAs}
               max={18}
-              className="lg:!text-[clamp(2.4rem,5.6vw,5.9rem)] lg:!text-[var(--p-fg)]"
+              className="lg:!text-[clamp(2.4rem,5.2vw,5rem)] lg:!text-[var(--p-fg)]"
             />
           </div>
           <ProjectVisual
